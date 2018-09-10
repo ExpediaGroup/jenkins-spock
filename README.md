@@ -3,6 +3,13 @@ Jenkins Groovy Test Utilities
 
 Utility classes to help with testing Jenkins pipeline scripts and functions written in Groovy.
 
+TODO
+-------------------------
+
+* [ ] Configure CI integration
+* [ ] Configure github-pages to host documentation
+* [ ] Publish release version to maven-central
+
 User Guide _([GroovyDoc](https://github.com/pages/homeaway/jenkins-spock/index.html))_
 ==============================
 
