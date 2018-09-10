@@ -105,8 +105,7 @@
 									<configuration>
 										<dryRun>${metadata.isPom}</dryRun>
 										<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-										<checkinComment>Publishing javadoc for
-											${project.artifactId}:${project.version}</checkinComment>
+										<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
 										<content>${project.reporting.outputDirectory}/apidocs</content>
 										<skipDeletedFiles>true</skipDeletedFiles>
 										<pubScmUrl>${project.scm.connection}</pubScmUrl>
