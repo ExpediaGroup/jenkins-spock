@@ -6,7 +6,7 @@
 	<groupId>com.homeaway.devtools.jenkins</groupId>
 	<artifactId>jenkins-spock</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0.0-RC5</version> <!-- http://semver.org -->
+	<version>2.0.0-SNAPSHOT</version> <!-- http://semver.org -->
 
 	<description>Test Jenkins pipeline code with Spock</description>
 
@@ -32,7 +32,7 @@
 		<url>https://github.com/homeaway/jenkins-spock</url>
 		<connection>scm:git:git@github.com:homeaway/jenkins-spock.git</connection>
 		<developerConnection>scm:git:git@github.com:homeaway/jenkins-spock.git</developerConnection>
-		<tag>jenkins-spock-2.0.0-RC5</tag>
+		<tag>HEAD</tag>
 	</scm>
 	
 	<distributionManagement>
