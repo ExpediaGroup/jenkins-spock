@@ -142,23 +142,6 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<!-- deploy to maven-central when releasing -->
-			<id>maven-central-deploy</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 
 	<dependencies>
@@ -450,6 +433,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>${release.pluginVersion}</version>
+					<configuration>
+						<goals>deploy nexus-staging:release</goals>
+					</configuration>
 				</plugin>
 
 				<plugin>
@@ -598,20 +584,11 @@
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>${nexusStaging.pluginVersion}</version>
 					<extensions>true</extensions>
-					<executions>
-						<execution>
-							<id>default-deploy</id>
-							<phase>deploy</phase>
-							<goals>
-								<goal>deploy</goal>
-							</goals>
-							<configuration>
-								<serverId>ossrh</serverId>
-								<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-								<skipStaging>true</skipStaging>
-							</configuration>
-						</execution>
-					</executions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					</configuration>
 				</plugin>
 
 			</plugins>
