@@ -421,7 +421,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${javadoc.pluginVersion></version>
+					<version>${javadoc.pluginVersion}</version>
 					<configuration>
 						<skip>true</skip>
 					</configuration>
