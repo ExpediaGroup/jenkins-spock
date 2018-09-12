@@ -1,4 +1,4 @@
-Jenkins Groovy Test Utilities 
+Jenkins Pipeline Support for Spock
 ==============================
 
 Utility classes to help with testing Jenkins pipeline scripts and functions written in Groovy.

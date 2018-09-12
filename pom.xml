@@ -35,21 +35,37 @@
 		<developerConnection>scm:git:git@github.com:homeaway/jenkins-spock.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
+	
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<properties>
 		<!-- basic maven lifecycle properties -->
 		<sourceVersion>1.8</sourceVersion>
 		<targetVersion>1.8</targetVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<compiler.pluginVersion>3.8.0</compiler.pluginVersion>
-		<site.pluginVersion>3.7.1</site.pluginVersion>
-		<deploy.pluginVersion>2.8.2</deploy.pluginVersion>
+		<assembly.pluginVersion>3.1.0</assembly.pluginVersion>
 		<clean.pluginVersion>3.1.0</clean.pluginVersion>
-		<install.pluginVersion>2.5.2</install.pluginVersion>
+		<compiler.pluginVersion>3.8.0</compiler.pluginVersion>
+		<deploy.pluginVersion>2.8.2</deploy.pluginVersion>
 		<enforcer.pluginVersion>3.0.0-M2</enforcer.pluginVersion>
-		<surefire.pluginVersion>2.22.0</surefire.pluginVersion>
+		<gpg.pluginVersion>1.5</gpg.pluginVersion>
+		<install.pluginVersion>2.5.2</install.pluginVersion>
 		<jar.pluginVersion>3.1.0</jar.pluginVersion>
 		<resources.pluginVersion>3.1.0</resources.pluginVersion>
+		<site.pluginVersion>3.7.1</site.pluginVersion>
+		<source.pluginVersion>2.2.1</source.pluginVersion>
+		<surefire.pluginVersion>2.22.0</surefire.pluginVersion>
 
 		<!-- Groovy versions -->
 		<groovy.core.version>2.4.11</groovy.core.version>
@@ -105,8 +121,7 @@
 									<configuration>
 										<dryRun>${metadata.isPom}</dryRun>
 										<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-										<checkinComment>Publishing javadoc for
-											${project.artifactId}:${project.version}</checkinComment>
+										<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
 										<content>${project.reporting.outputDirectory}/apidocs</content>
 										<skipDeletedFiles>true</skipDeletedFiles>
 										<pubScmUrl>${project.scm.connection}</pubScmUrl>
@@ -317,6 +332,25 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${assembly.pluginVersion}</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+							<configuration>
+								<descriptors>
+									<descriptor>src/main/assembly/javadoc.xml</descriptor>
+								</descriptors>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>${clean.pluginVersion}</version>
 				</plugin>
@@ -376,6 +410,21 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${gpg.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>${install.pluginVersion}</version>
 				</plugin>
@@ -412,6 +461,21 @@
 							<version>1.3</version>
 						</dependency>
 					</dependencies>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${source.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>attach-sources</id>
+							<goals>
+								<goal>jar-no-fork</goal>
+								<goal>test-jar-no-fork</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 
 				<plugin>
@@ -482,7 +546,7 @@
 							<goals>
 								<goal>groovydoc</goal>
 							</goals>
-							<phase>verify</phase>
+							<phase>prepare-package</phase>
 							<configuration>
 								<links>
 									<link>
@@ -538,6 +602,11 @@
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -548,12 +617,22 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
+				<artifactId>maven-gpg-plugin</artifactId>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
@@ -561,7 +640,7 @@
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
+				<artifactId>maven-deploy-plugin</artifactId>
 			</plugin>
 
 			<plugin>
