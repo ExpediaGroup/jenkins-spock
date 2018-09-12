@@ -59,6 +59,7 @@
 		<compiler.pluginVersion>3.8.0</compiler.pluginVersion>
 		<deploy.pluginVersion>2.8.2</deploy.pluginVersion>
 		<enforcer.pluginVersion>3.0.0-M2</enforcer.pluginVersion>
+		<gpg.pluginVersion>1.5</gpg.pluginVersion>
 		<install.pluginVersion>2.5.2</install.pluginVersion>
 		<jar.pluginVersion>3.1.0</jar.pluginVersion>
 		<resources.pluginVersion>3.1.0</resources.pluginVersion>
@@ -409,6 +410,21 @@
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${gpg.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>${install.pluginVersion}</version>
 				</plugin>
@@ -610,6 +626,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
 			</plugin>
 			
 			<plugin>
