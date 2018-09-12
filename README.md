@@ -112,5 +112,12 @@ As long as you have a contemporary (1.8+) JDK and Maven (3.3+), it should build 
 Releasing
 -------------------------
 
-**jenkins-spock** should be released as a `legacy maven` release on HomeAway's internal CICD platform. However, all interesting release logic is performed by the [`maven-release-plugin`](https://maven.apache.org/maven-release/maven-release-plugin/) so other platforms should be able to successfully release this project with a basic understanding of that tool.
+**jenkins-spock** should be released by the [`maven-release-plugin`](https://maven.apache.org/maven-release/maven-release-plugin/):
 
+	mvn clean release:prepare release:perform
+
+In order for this to succeed, the user running this must
+
+1. Configure GitHub credentials with `push` access to this repository.
+2. Configure Sonatype Nexus credentials with deploy access to the `com.homeaway` groupId.
+3. Configure a PGP identity so that the [`maven-gpg-plugin`](https://maven.apache.org/plugins/maven-gpg-plugin/) can sign artifacts.

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -9,7 +8,9 @@
 	<packaging>jar</packaging>
 	<version>2.0.0-SNAPSHOT</version> <!-- http://semver.org -->
 
+	<name>Jenkins pipeline support for Spock</name>
 	<description>Test Jenkins pipeline code with Spock</description>
+	<url>https://github.com/homeaway/jenkins-spock</url>
 
 	<licenses>
 		<license>
@@ -62,6 +63,9 @@
 		<gpg.pluginVersion>1.5</gpg.pluginVersion>
 		<install.pluginVersion>2.5.2</install.pluginVersion>
 		<jar.pluginVersion>3.1.0</jar.pluginVersion>
+		<javadoc.pluginVersion>3.0.1</javadoc.pluginVersion>
+		<nexusStaging.pluginVersion>1.6.7</nexusStaging.pluginVersion>
+		<release.pluginVersion>2.5.3</release.pluginVersion>
 		<resources.pluginVersion>3.1.0</resources.pluginVersion>
 		<site.pluginVersion>3.7.1</site.pluginVersion>
 		<source.pluginVersion>2.2.1</source.pluginVersion>
@@ -314,23 +318,6 @@
 			<plugins>
 
 				<plugin>
-					<groupId>com.github.github</groupId>
-					<artifactId>site-maven-plugin</artifactId>
-					<version>${githubSite.pluginVersion}</version>
-					<configuration>
-						<message>Creating site for ${project.version}</message>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>site</goal>
-							</goals>
-							<phase>site-deploy</phase>
-						</execution>
-					</executions>
-				</plugin>
-
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>${assembly.pluginVersion}</version>
@@ -438,10 +425,16 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${javadoc.pluginVersion></version>
+					<version>${javadoc.pluginVersion}</version>
 					<configuration>
 						<skip>true</skip>
 					</configuration>
+				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>${release.pluginVersion}</version>
 				</plugin>
 
 				<plugin>
@@ -585,6 +578,18 @@
 					</executions>
 				</plugin>
 
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>${nexusStaging.pluginVersion}</version>
+					<extensions>true</extensions>
+					<configuration>
+						<serverId>ossrh</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+						<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					</configuration>
+				</plugin>
+
 			</plugins>
 		</pluginManagement>
 
@@ -641,6 +646,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
 			</plugin>
 
 			<plugin>
