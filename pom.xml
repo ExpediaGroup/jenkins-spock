@@ -649,7 +649,6 @@
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>${nexusStaging.pluginVersion}</version>
 			</plugin>
 
 			<plugin>
