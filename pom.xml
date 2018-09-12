@@ -62,6 +62,7 @@
 		<gpg.pluginVersion>1.5</gpg.pluginVersion>
 		<install.pluginVersion>2.5.2</install.pluginVersion>
 		<jar.pluginVersion>3.1.0</jar.pluginVersion>
+		<javadoc.pluginVersion>3.0.1</javadoc.pluginVersion>
 		<resources.pluginVersion>3.1.0</resources.pluginVersion>
 		<site.pluginVersion>3.7.1</site.pluginVersion>
 		<source.pluginVersion>2.2.1</source.pluginVersion>
