@@ -11,6 +11,7 @@
 	<fileSets>
 		<fileSet>
 			<directory>${project.build.directory}/site/apidocs/</directory>
+			<outputDirectory></outputDirectory>
 		</fileSet>
 	</fileSets>
 </assembly>
