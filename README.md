@@ -23,7 +23,13 @@ Add this library to the `pom.xml` of a Jenkins plugin, in the `test` scope:
 </dependency>
 ```
 
-If you want to specify a version, check the [CHANGELOG.md](CHANGELOG.md) to find the available versions.
+Check the [CHANGELOG.md](CHANGELOG.md) to find the available versions.
+
+Working Examples
+-------------------------
+
+The [`examples` directory](examples) contains working sample projects that show of the major kinds of project this library can be used with.
+Check them out and try building them yourself!
 
 Specifications
 -------------------------
