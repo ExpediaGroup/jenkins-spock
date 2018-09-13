@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## Unreleased
 
+## 2.0.1
+
+_Release Date: 2018-09-13_
+
+### Fixed
+
+* Layout of documentation files in `-javadoc` artifact was incorrect.
+
 ## 2.0.0
 
 _Release Date: 2018-09-12_
