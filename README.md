@@ -3,13 +3,6 @@ Jenkins Pipeline Support for Spock
 
 Utility classes to help with testing Jenkins pipeline scripts and functions written in Groovy.
 
-TODO
--------------------------
-
-* [ ] Configure CI integration
-* [ ] Configure github-pages to host documentation
-* [ ] Publish release version to maven-central
-
 User Guide _([GroovyDoc](https://javadoc.io/doc/com.homeaway.devtools.jenkins/jenkins-spock))_
 ==============================
 
