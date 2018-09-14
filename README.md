@@ -6,7 +6,7 @@ Utility classes to help with testing Jenkins pipeline scripts and functions writ
 User Guide _([GroovyDoc](https://javadoc.io/doc/com.homeaway.devtools.jenkins/jenkins-spock))_
 ==============================
 
-Add this library to the `pom.xml` of a Jenkins plugin, in the `test` scope:
+Add this library to `pom.xml` in the `test` scope:
 
 ```xml
 <dependency>
