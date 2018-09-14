@@ -21,7 +21,7 @@ Check the [CHANGELOG.md](CHANGELOG.md) to find the available versions.
 Working Examples
 -------------------------
 
-The [`examples` directory](examples) contains working sample projects that show of the major kinds of project this library can be used with.
+The [`examples` directory](examples) contains working sample projects that show off the major kinds of project this library can be used with.
 Check them out and try building them yourself!
 
 Specifications
