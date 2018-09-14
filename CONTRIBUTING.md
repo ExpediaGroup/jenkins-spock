@@ -22,8 +22,20 @@ If code changes are testable, the pull request should include new test code.
 ### Documentation
 
 Any code change that changes the behavior of the project should be accompanied by appropriate documentation updates.
+This includes updating the "unreleased" section of the [`CHANGELOG`](CHANGELOG.md).
+
+Documentation Changes
+-------------------------
+
+_(such as to README and other `*.md` files)_
+
+To submit changes to _documentation_ (JavaDoc/GroovyDoc changes are _code changes_ as these changes are made in source code files), please fork this repository and send a pull request to the `master` branch.
+
+Project maintainers may make documentation-only commits directly to the `master` branch without going through the Pull Request process.
+
+Documentation-only commits do not require an update to the [`CHANGELOG`](CHANGELOG.md).
 
 CI/CD
 -------------------------
 
-HomeAway maintains an internal CICD pipeline for this project. At the moment, the output of CICD builds are not publicly-visible.
+There is currently no CI/CD system connected. HomeAway's maintainers will manually verify that pull request code can build & passes its tests.
