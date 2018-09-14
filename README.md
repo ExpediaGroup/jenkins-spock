@@ -10,7 +10,7 @@ TODO
 * [ ] Configure github-pages to host documentation
 * [ ] Publish release version to maven-central
 
-User Guide _([GroovyDoc](https://github.com/pages/homeaway/jenkins-spock/index.html))_
+User Guide _([GroovyDoc](https://javadoc.io/doc/com.homeaway.devtools.jenkins/jenkins-spock))_
 ==============================
 
 Add this library to the `pom.xml` of a Jenkins plugin, in the `test` scope:
@@ -35,7 +35,7 @@ Specifications
 -------------------------
 
 This library provides a `JenkinsPipelineSpecification` class that extends the Spock testing framework's `Specification` class. To test Jenkins pipeline Groovy code, extend `JenkinsPipelineSpecification` instead of `Specification`.
-Please see the [GroovyDoc for `JenkinsPipelineSpecification`](https://github.com/pages/homeaway/jenkins-spock/com/homeaway/devtools/jenkins/testing/JenkinsPipelineSpecification.html) for specific usage information and the [Spock Framework Documentation](http://docs.spockframework.org/) for general usage information.
+Please see the [GroovyDoc for `JenkinsPipelineSpecification`](http://javadoc.io/page/com.homeaway.devtools.jenkins/jenkins-spock/latest/com/homeaway/devtools/jenkins/testing/JenkinsPipelineSpecification.html) for specific usage information and the [Spock Framework Documentation](http://docs.spockframework.org/) for general usage information.
 
 During the tests of a `JenkinsPipelineSpecification` suite,
 
