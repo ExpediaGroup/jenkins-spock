@@ -24,7 +24,7 @@ Usage:
 DefaultPipeline()
 ```
 
-`Deloyer`
+`Deployer`
 -------------------------
 
 A step that SSHs to a machine in an environment, and bounces an application using `docker-compose`.
