@@ -1,0 +1,6 @@
+language: groovy
+script:
+  - mvn test -B
+  - mvn -f examples/helper-script test -B
+  - mvn -f examples/shared-library test -B
+  - mvn -f examples/whole-pipeline test -B
