@@ -11,6 +11,14 @@
 
 	<description>Testing a Jenkinsfile and Helper Script with Spock</description>
 	
+	<repositories>
+		<repository>
+			<id>jenkins-releases</id>
+			<name>Jenkins Releases</name>
+			<url>http://repo.jenkins-ci.org/releases</url>
+		</repository>
+	</repositories>
+	
 	<properties>
 		
 		<groovy.core.version>2.4.11</groovy.core.version>

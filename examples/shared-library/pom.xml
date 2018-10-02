@@ -9,7 +9,15 @@
 	<packaging>jar</packaging>
 	<version>0.0.0-SNAPSHOT</version> <!-- unused -->
 
-	<description>Testing a Jenkinsfile and Helper Script with Spock</description>
+	<description>Testing a Pipeline Shared Library with Spock</description>
+	
+	<repositories>
+		<repository>
+			<id>jenkins-releases</id>
+			<name>Jenkins Releases</name>
+			<url>http://repo.jenkins-ci.org/releases</url>
+		</repository>
+	</repositories>
 	
 	<properties>
 		
