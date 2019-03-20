@@ -1,4 +1,6 @@
 package com.example
+@Grab(group='org.apache.httpcomponents', module='httpclient', version='4.5.7')
+import org.apache.http.ssl.SSLContexts
 
 public class SharedLibraryConstants {
 	public static final String DEPLOY_COMMAND = """
