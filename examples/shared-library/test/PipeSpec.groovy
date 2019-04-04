@@ -12,7 +12,7 @@ public class PipeSpec extends JenkinsPipelineSpecification {
 		then:
 			1 * getPipelineMock("node")(_)
 			1 * getPipelineMock("timestamps")(_)
-			1 * getPipelineMock("prepare.call")(_)
+			1 * getPipelineMock("prepare.call")()
 	}
 }
 
