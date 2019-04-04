@@ -188,11 +188,19 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- '@Library()' annotation -->
+		<!-- timestamps {...} step -->
 		<dependency>
-			<groupId>org.jenkins-ci.plugins.workflow</groupId>
-			<artifactId>workflow-cps-global-lib</artifactId>
-			<version>2.13</version>
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>timestamper</artifactId>
+			<version>1.9</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- cleanWs() step -->
+		<dependency>
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>ws-cleanup</artifactId>
+			<version>0.37</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -285,6 +293,7 @@
 			<testResource>
 				<includes>
 					<include>vars/**/*.groovy</include>
+					<include>pipes/*.groovy</include>
 				</includes>
 				<directory>${project.basedir}</directory>
 			</testResource>
