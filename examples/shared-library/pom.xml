@@ -292,8 +292,9 @@
 		<testResources>
 			<testResource>
 				<includes>
-					<include>vars/**/*.groovy</include>
-					<include>pipes/*.groovy</include>
+					<include>Jenkinsfile</include>
+					<include>pipes/**/*.groovy</include>
+					<include>vars/*.groovy</include>
 				</includes>
 				<directory>${project.basedir}</directory>
 			</testResource>
