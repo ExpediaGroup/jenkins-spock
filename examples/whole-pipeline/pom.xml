@@ -17,6 +17,11 @@
 			<name>Jenkins Releases</name>
 			<url>http://repo.jenkins-ci.org/releases</url>
 		</repository>
+		<repository>
+			<id>jenkins-public</id>
+			<name>Jenkins Public</name>
+			<url>http://repo.jenkins-ci.org/public</url>
+		</repository>
 	</repositories>
 	
 	<properties>
