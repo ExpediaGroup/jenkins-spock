@@ -27,9 +27,9 @@
 		
 		<jenkins.version>2.102</jenkins.version>
 		<jenkins.servlet.version>3.1.0</jenkins.servlet.version>
-		<jenkins.symbol.version>1.10</jenkins.symbol.version>
-		<jenkins.workflow.cps.version>2.36</jenkins.workflow.cps.version>
-		<jenkins.workflow.step.version>2.10</jenkins.workflow.step.version>
+		<jenkins.symbol.version>1.17</jenkins.symbol.version>
+		<jenkins.workflow.cps.version>2.39</jenkins.workflow.cps.version>
+		<jenkins.workflow.step.version>2.18</jenkins.workflow.step.version>
 		
 		<jenkins-spock.version>2.0.0</jenkins-spock.version>
 		
@@ -53,6 +53,67 @@
 				<artifactId>guava</artifactId>
 				<version>20.0</version>
 			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>4.4.9</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.10</version>
+			</dependency>
+			
+			<!-- Transitive Jenkins Plugin dependencies that need managing -->
+			<dependency>
+				<groupId>org.jenkins-ci.plugins</groupId>
+				<artifactId>credentials</artifactId>
+				<version>2.1.17</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jenkins-ci.plugins</groupId>
+				<artifactId>script-security</artifactId>
+				<version>1.39</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.jenkins-ci.plugins.icon-shim</groupId>
+				<artifactId>icon-set</artifactId>
+				<version>2.0.2</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.jenkins-ci.plugins</groupId>
+				<artifactId>scm-api</artifactId>
+				<version>2.2.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jenkins-ci.plugins</groupId>
+				<artifactId>structs</artifactId>
+				<version>1.17</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jenkins-ci.plugins.workflow</groupId>
+				<artifactId>workflow-api</artifactId>
+				<version>2.34</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jenkins-ci.plugins.workflow</groupId>
+				<artifactId>workflow-support</artifactId>
+				<version>2.20</version>
+			</dependency>
+			
+			
 		</dependencies>
 	</dependencyManagement>
 
@@ -188,6 +249,14 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<dependency>
+			<!-- provides isUnix() step -->
+			<groupId>org.jenkins-ci.plugins.workflow</groupId>
+			<artifactId>workflow-basic-steps</artifactId>
+			<version>2.16</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>
@@ -259,6 +328,26 @@
 						</execution>
 					</executions>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.0.0-M2</version>
+					<executions>
+						<execution>
+							<id>enforce</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<phase>validate</phase>
+							<configuration>
+								<rules>
+									<requireUpperBoundDeps>
+									</requireUpperBoundDeps>
+								</rules>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -270,6 +359,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
 			</plugin>
 		</plugins>
 		
