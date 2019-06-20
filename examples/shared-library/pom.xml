@@ -185,6 +185,14 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- 'echo' pipeline step -->
+		<dependency>
+			<groupId>org.jenkins-ci.plugins.workflow</groupId>
+			<artifactId>workflow-basic-steps</artifactId>
+			<version>2.6</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<dependency>
 			<!-- provides libraryResource() step -->
 			<groupId>org.jenkins-ci.plugins.workflow</groupId>
