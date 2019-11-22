@@ -448,10 +448,10 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	 * {@link JenkinsPipelineSpecification#loadPipelineScriptForTest(java.lang.String)}. You can add or override this
 	 * path in case you specified custom source sets in your project.
 	 */
-	protected String[] scriptClassPath = ["src/main/resources", // if it's a main resource
-										  "src/test/resources", // if it's a test resource
-										  "target/classes", // if it's on the main classpath
-										  "target/test-classes"] // if it's on the test classpath
+	protected String[] script_class_path = ["src/main/resources", // if it's a main resource
+											"src/test/resources", // if it's a test resource
+											"target/classes", // if it's on the main classpath
+											"target/test-classes"] // if it's on the test classpath
 
 	/**
 	 * Add Spock Mock objects for each of the pipeline extensions to each of the _objects.
@@ -743,8 +743,8 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 		return script
 	}
 
-	private String[] generateScriptClasspath(String resourcePath) {
-		return scriptClassPath.collect {path -> path + resourcePath }
+	protected String[] generateScriptClasspath(String resourcePath) {
+		return script_class_path.collect { path -> path + resourcePath }
 	}
 
 	/**
