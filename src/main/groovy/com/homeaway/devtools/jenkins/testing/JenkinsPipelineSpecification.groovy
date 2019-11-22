@@ -355,6 +355,7 @@ def methodMissing(String _name, _args) {
  * </p>
  * 
  * @author awitt
+ * @author mld-ger
  *
  */
 public abstract class JenkinsPipelineSpecification extends Specification {
@@ -441,7 +442,17 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	 * </p>
 	 */
 	protected Map<Class<?>,Object> dummy_extension_instances = new HashMap<>()
-	
+
+	/**
+	 * The defined paths will be checked to load the script given in
+	 * {@link JenkinsPipelineSpecification#loadPipelineScriptForTest(java.lang.String)}. You can add or override this
+	 * path in case you specified custom source sets in your project.
+	 */
+	protected String[] scriptClassPath = ["src/main/resources", // if it's a main resource
+										  "src/test/resources", // if it's a test resource
+										  "target/classes", // if it's on the main classpath
+										  "target/test-classes"] // if it's on the test classpath
+
 	/**
 	 * Add Spock Mock objects for each of the pipeline extensions to each of the _objects.
 	 * <p>
@@ -720,13 +731,9 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 			resource_path = String.join( "/", path_parts[0..path_parts.length-2] )
 			resource_path = "/${resource_path}/"
 		}
-		
-		GroovyScriptEngine script_engine = new GroovyScriptEngine(
-			"src/main/resources${resource_path}", // if it's a main resource
-			"src/test/resources${resource_path}", // if it's a test resource
-			"target/classes${resource_path}", // if it's on the main classpath
-			"target/test-classes${resource_path}" ) // if it's on the test classpath
-		
+
+		GroovyScriptEngine script_engine = new GroovyScriptEngine(generateScriptClasspath(resource_path))
+
 		Class<Script> script_class = script_engine.loadScriptByName( "${filename}" )
 
 		Script script = script_class.newInstance()
@@ -735,7 +742,11 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 		
 		return script
 	}
-	
+
+	private String[] generateScriptClasspath(String resourcePath) {
+		return scriptClassPath.collect {path -> path + resourcePath }
+	}
+
 	/**
 	 * Log helpful information about a call intercepted as a result of this specification.
 	 *
