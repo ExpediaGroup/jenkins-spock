@@ -99,6 +99,31 @@ Depending on your parent pom, some of the `${jenkins.version}` properties may al
 
 If your code actually writes code against classes in any of these dependencies, remove the `<scope>test</scope>` entry for the corresponding block(s).
 
+Define Custom Classpath For Script Loading
+==============================
+
+When your project defined custom source sets you need to set the classpath for the loading of your scripts manually. E.g. when you want to load your custom pipeline script that is located in `test/resources` you can do:
+
+```groovy
+class PipelineTest extends JenkinsPipelineSpecification {
+
+    def setup() {
+       scriptClassPath = ["test/resources"] //Note that this is a collection and you can define multiple paths.
+    }
+
+    def "Some test"() {
+        def pipeline = loadPipelineScriptForTest("Jenkinsfile") // Will test/resources/Jenkinsfile
+        [...]
+    }
+}
+```
+
+The default paths are:
+* src/main/resources
+* src/test/resources
+* target/classes
+* target/test-classes
+
 Developer Guide
 ==============================
 
