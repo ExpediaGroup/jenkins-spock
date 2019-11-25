@@ -50,6 +50,7 @@ import spock.lang.Specification
  * <li><a href="#mock-jenkins">Mock Jenkins</a></li>
  * <li><a href="#mock-pipeline-execution">Mock Pipeline Execution</a></li>
  * <li><a href="#metaprogramming">Metaprogramming</a></li>
+ * <li><a href="#custom-classpath">Define Custom Classpath For Script Loading</a></li>
  * </ol>
  * <a name="testing-groovy-functions"></a>
  * <h1>Testing Groovy Functions</h1>
@@ -347,12 +348,39 @@ then:
  * </p>
  * <pre><code>
 def methodMissing(String _name, _args) {
-	LOG.warn( "Called a misssing method: ${_name}(${_args.toString()})" )
+	LOG.warn( "Called a missing method: ${_name}(${_args.toString()})" )
 }
  * </code></pre>
- * <p>
+ * <p>	
  * simply cannot be enabled to call pipeline steps during tests. Avoid writing classes like that.
  * </p>
+ * 
+ * <a name="custom-classpath"></a>
+ * <h1>Define Custom Classpath For Script Loading</h1>
+ *
+ * When your project defined custom source sets you need to set the classpath for the loading of your scripts manually. 
+ * E.g. when you want to load your custom pipeline script that is located in `test/resources` you can do:
+ *
+ * <pre><code> 
+class PipelineTest extends JenkinsPipelineSpecification {*
+	def setup() {
+		scriptClassPath = ["test/resources"] //Note that this is a collection and you can define multiple paths.
+	}
+
+	def "Some test) {
+		def pipeline = loadPipelineScriptForTest("Jenkinsfile") // Will test/resources/Jenkinsfile
+		[...]
+	}
+}
+ * </code></pre>
+ *
+ * The default paths are:
+ * <ul>
+ * <li>src/main/resources</li>
+ * <li>src/test/resources</li>
+ * <li>target/classes</li>
+ * <li>target/test-classes</li>
+ * </ul>
  * 
  * @author awitt
  * @author mld-ger
