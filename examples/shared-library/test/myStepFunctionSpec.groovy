@@ -8,7 +8,7 @@ public class myStepFunctionSpec extends JenkinsPipelineSpecification {
 		myStepFunction = loadPipelineScriptForTest("vars/myStepFunction.groovy")
 	}
 
-	def "correct method call" () {
+	def "demonstrates incorrect method call" () {
 		when:
 			myStepFunction.call()
 		then:
