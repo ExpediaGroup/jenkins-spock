@@ -153,43 +153,11 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- 'echo' pipeline step -->
 		<dependency>
-			<!-- provides the sh() pipeline step -->
 			<groupId>org.jenkins-ci.plugins.workflow</groupId>
-			<artifactId>workflow-durable-task-step</artifactId>
-			<version>2.21</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<!-- provides the slackSend() pipeline step -->
-			<groupId>org.jenkins-ci.plugins</groupId>
-			<artifactId>slack</artifactId>
-			<version>2.3</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<!-- provides stage() step -->
-			<groupId>org.jenkins-ci.plugins</groupId>
-			<artifactId>pipeline-stage-step</artifactId>
-			<version>2.3</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<!-- provides sshagent() step -->
-			<groupId>org.jenkins-ci.plugins</groupId>
-			<artifactId>ssh-agent</artifactId>
-			<version>1.16</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<!-- provides libraryResource() step -->
-			<groupId>org.jenkins-ci.plugins.workflow</groupId>
-			<artifactId>workflow-cps-global-lib</artifactId>
-			<version>2.10</version>
+			<artifactId>workflow-basic-steps</artifactId>
+			<version>2.6</version>
 			<scope>test</scope>
 		</dependency>
 		
