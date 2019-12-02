@@ -23,6 +23,8 @@ import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
  * Given a regular Groovy class that tries to call pipeline steps (here {@link ClassToTest}),
  * verify that those calls can be mocked.
  * 
+ * Further verify that calls that can't be dispatched to a mock are handled correctly.
+ * 
  * @author awitt
  *
  */
@@ -39,5 +41,32 @@ public class ClassToTestSpec extends JenkinsPipelineSpecification {
 			1 * getPipelineMock( "echo" )("Hello from a [nodeType] node!")
 			1 * getPipelineMock( "echo" )("Goodbye from a [nodeType] node!")
 			1 * getPipelineMock( "echo" )("inside node")
+	}
+	
+	def "calling method with correct parameters"() {
+		given:
+			ClassToTest myVar = new ClassToTest()
+		when:
+			myVar.methodCall()
+		then:
+			1 * getPipelineMock( "echo")( "called methodCall" )
+	}
+	
+	def "calling method with incorrect parameters" () {
+		given:
+			ClassToTest myVar = new ClassToTest()
+		when:
+			myVar.methodCall( "incorrectParameter" )
+		then:
+			thrown MissingMethodException
+	}
+	
+	def "calling nonexistent method"() {
+		given:
+			ClassToTest myVar = new ClassToTest()
+		when:
+			myVar.nonexistentMethod()
+		then:
+			thrown IllegalStateException
 	}
 }

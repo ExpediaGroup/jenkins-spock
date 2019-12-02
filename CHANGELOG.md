@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Fixed
 
 * Added `<repositories>` section to all poms pointing to the Jenkins Release repository - so that Jenkins artifacts can be successfully located during builds.
+* Emit more-specific exception when tests call a Groovy method with an incorrect signature
 
 ## 2.0.1
 

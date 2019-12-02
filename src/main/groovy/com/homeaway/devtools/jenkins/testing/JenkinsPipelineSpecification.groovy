@@ -526,6 +526,7 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 					}
 				}
 				
+				// Call the appropriate mock, if we can.
 				if( PIPELINE_STEPS.contains( _name ) || pipeline_steps.contains( _name ) ) {
 					
 					LOG_CALL_INTERCEPT(
@@ -568,6 +569,17 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 					return result
 				}
 				
+				// We were not able to dispatch the call to anywhere sensible.
+				
+				// If the receiving object has a method of the same name,
+				// assume that's the intended target and print a more-traditional "groovy method missing" message.
+				if( object.metaClass.methods?.name.unique().contains( _name ) ) {
+					throw new MissingMethodException( _name, delegate.getClass(), _args );
+				}
+				
+				// Otherwise, assume (as this is jenkins-spock) that the intended target was some unknown
+				// undefined, and un-mocked pipeline step.
+				// print a helpful error message.
 				MissingMethodException mme = new MissingMethodException( "(intercepted on instance [${object}] during test [${this}]) ${_name}", delegate.getClass(), _args )
 				throw new IllegalStateException( "During a test, the pipeline step [${_name}] was called but there was no mock for it.\n\t1. Is the name correct?\n\t2. Does the pipeline step have a descriptor with that name?\n\t3. Does that step come from a plugin? If so, is that plugin listed as a dependency in your pom.xml?\n\t4. If not, you may need to call explicitlyMockPipelineStep('${_name}') in your test's setup: block.", mme )
 			}
