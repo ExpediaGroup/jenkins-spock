@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2018 Expedia Group.
+ Copyright (c) 2019 Expedia Group.
  All rights reserved.  http://www.homeaway.com
  
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,21 +17,22 @@
 
 package com.homeaway.devtools.jenkins.testing.functions
 
+import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
+
 /**
- * A regular Groovy class that calls pipeline steps.
+ * Verify that classes without methods don't trip up the "failed to dispatch a call" logic
+ * 
  * @author awitt
  *
  */
-class ClassToTest {
-	public Map helloNode(String _label, Closure _body) {
-		return node( _label ) {
-			echo( "Hello from a [${_label}] node!" )
-			_body()
-			echo( "Goodbye from a [${_label}] node!" )
-		}
-	}
+public class ClassWithNoMethodsSpec extends JenkinsPipelineSpecification {
 	
-	public methodCall() {
-		echo( "called methodCall" )
+	def "calling nonexistent method"() {
+		given:
+			ClassToTest myVar = new ClassToTest()
+		when:
+			myVar.nonexistentMethod()
+		then:
+			thrown IllegalStateException
 	}
 }

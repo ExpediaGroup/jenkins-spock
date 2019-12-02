@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2018 Expedia Group.
+ Copyright (c) 2019 Expedia Group.
  All rights reserved.  http://www.homeaway.com
  
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,20 +18,8 @@
 package com.homeaway.devtools.jenkins.testing.functions
 
 /**
- * A regular Groovy class that calls pipeline steps.
+ * A class with no methods.
  * @author awitt
  *
  */
-class ClassToTest {
-	public Map helloNode(String _label, Closure _body) {
-		return node( _label ) {
-			echo( "Hello from a [${_label}] node!" )
-			_body()
-			echo( "Goodbye from a [${_label}] node!" )
-		}
-	}
-	
-	public methodCall() {
-		echo( "called methodCall" )
-	}
-}
+class ClassWithNoMethods {}
