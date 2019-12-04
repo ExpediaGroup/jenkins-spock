@@ -186,6 +186,14 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<dependency>
+			<!-- provides echo() step -->
+			<groupId>org.jenkins-ci.plugins.workflow</groupId>
+			<artifactId>workflow-basic-steps</artifactId>
+			<version>2.6</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 	
 	<build>
