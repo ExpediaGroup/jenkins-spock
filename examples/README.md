@@ -8,5 +8,6 @@ These example repositories work as much as possible, but their Jenkins pipelines
 Integration Tests
 -------------------------
 
-Some of these example projects are generated from integration-test projects.
-Check [src/test/resources/test-projects/](src/test/resources/test-projects/) to see which of the "example projects" came from an integration-test project.
+Some of these example projects are actually run as integration tests during the build of `jenkins-spock`.
+
+Check the `fixup-integration-test-projects` execution of the `maven-invoker-plugin` in the `it` Maven profile in the `pom.xml` to see which examples are used as integration tests.

@@ -117,7 +117,7 @@ There is an `it` [Maven Profile]() that can be activated to run _integration tes
 
 	mvn verify -Pit
 
-The integration tests will try to test each project in the [src/test/resources/test-projects](src/test/resources/test-projects) using the current `jenkins-spock` code.
+The integration tests will run `mvn verify` on some of the [Working Example Projects](examples), using the current `jenkins-spock` code.
 
 Releasing
 -------------------------
