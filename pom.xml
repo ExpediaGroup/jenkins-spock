@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -70,6 +71,7 @@
 		<enforcer.pluginVersion>3.0.0-M2</enforcer.pluginVersion>
 		<gpg.pluginVersion>1.5</gpg.pluginVersion>
 		<install.pluginVersion>2.5.2</install.pluginVersion>
+		<invoker.pluginVersion>3.2.1</invoker.pluginVersion>
 		<jar.pluginVersion>3.1.0</jar.pluginVersion>
 		<javadoc.pluginVersion>3.0.1</javadoc.pluginVersion>
 		<nexusStaging.pluginVersion>1.6.7</nexusStaging.pluginVersion>
@@ -423,6 +425,30 @@
 					<artifactId>maven-install-plugin</artifactId>
 					<version>${install.pluginVersion}</version>
 				</plugin>
+				
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-invoker-plugin</artifactId>
+					<version>${invoker.pluginVersion}</version>
+					<inherited>false</inherited>
+					<configuration>
+						<projectsDirectory>src/test/resources/test-projects</projectsDirectory>
+						<localRepositoryPath>${project.build.directory}/test-projects-repo</localRepositoryPath>
+						<cloneProjectsTo>${project.build.directory}/test-projects</cloneProjectsTo>
+						<streamLogs>true</streamLogs>
+						<skipInvocation>${maven.test.skip}</skipInvocation>
+					</configuration>
+					<executions>
+						<execution>
+							<id>test-example-projects</id>
+							<goals>
+								<goal>install</goal>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -644,6 +670,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-invoker-plugin</artifactId>
 			</plugin>
 			
 			<plugin>
