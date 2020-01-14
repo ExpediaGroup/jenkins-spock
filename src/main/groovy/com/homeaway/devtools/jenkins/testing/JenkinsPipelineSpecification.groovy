@@ -42,7 +42,12 @@ import spock.lang.Specification
  * <li><a href="#testing-groovy-functions">Testing Groovy Functions</a></li>
  * <li><a href="#testing-pipeline-scripts">Testing Pipeline Scripts</a></li>
  * <li><a href="#mock-pipeline-steps">Mock Pipeline Steps</a></li>
- * <li><a href="#mock-pipeline-variables">Mock Pipeline Variables</a></li>
+ * <li><a href="#using-pipeline-variables">Using Pipeline Variables</a>
+ * 	<ol>
+ * 		<li><a href="#mock-globalvariables">Mock GlobalVariables</a></li>
+ *		<li><a href="#defining-pipeline-variables">Defining Pipeline Variables</a></li> 
+ * 	</ol>
+ * </li>
  * <li><a href="#mock-shared-library-variables">Mock Shared Library Variables</a></li>
  * <li><a href="#preparing-additional-objects">Preparing Additional Objects</a></li>
  * <li><a href="#mocking-additional-pipeline-steps">Mocking Additional Pipeline Steps</a></li>
@@ -163,10 +168,20 @@ def "multi-argument capture" () {
 }
  * </code></pre>
  * 
- * <a name="mock-pipeline-variables"></a>
- * <h1>Mock Pipeline Variables</h1>
+ * <a name="using-pipeline-variables"></a>
+ * <h1>Using Pipeline Variables</h1>
  * <p>
- * Method calls on variables are available as mocks at <code>getPipelineMock("VariableName.methodName")</code>.
+ * There are two ways that Jenkins can make a globally-accessible variable available to your Pipeline scripts:
+ * <ol>
+ * <li>Defining it before your script runs</li>
+ * <li>A class that uses the {@link org.jenkinsci.plugins.workflow.cps.GlobalVariable GlobalVariable} extension point</li>
+ * </ol>
+ * Each way requires a different approach to use in your tests!
+ * </p>
+ * <a name="mock-globalvariables"></a>
+ * <h2>Mock GlobalVariables</h2>
+ * <p>
+ * Method calls on {@link org.jenkinsci.plugins.workflow.cps.GlobalVariable GlobalVariable}s are available as mocks at <code>getPipelineMock("VariableName.methodName")</code>.
  * Because it can be impossible to tell which methods will be valid on a given variable at runtime <b>all method calls on variables are allowed during tests</b> and captured by a Spock Mock. 
  * </p>
  * <p>
@@ -184,7 +199,7 @@ then:
  * You shouldn't need to interact directly with these objects.
  * </p>
  * 
- * <h2>Properties of Mock Pipeline Variables</h2>
+ * <h3>Properties of Mock Pipeline Variables</h3>
  * <p>
  * All property access attempts on pipeline variables will be forwarded to <code>getPipelineMock("VariableName.getProperty")(propertyName)</code>.
  * You can expect and stub these accesses normally:
@@ -208,17 +223,22 @@ expect:
  * in log messages. However, due to <a target="_blank" href="https://issues.apache.org/jira/browse/GROOVY-3493">GROOVY-3493</a>, we can't "fix" this with metaprogramming at test-time either.
  * </p>
  * 
+ * <a name="defining-pipeline-variables"></a>
  * <h2>Defining Pipeline Variables</h2>
  * <p>
- * Not every pipeline variable needs to be mocked. Sometimes you might just need to define a dummy value.
- * You can just do this in your test class if that's where you use the variable.
- * If the variable is used in a pipeline script that's being tested (as may be the case for variables that Jenkins automatically sets for you),
- * set the variable on the script's {@link Binding}: 
+ * There are some globally-accessible variables in pipeline scripts that Jenkins sets automatically.
+ * These variables do not need to be <i>mocked</i>. In fact, they cannot and should not be mocked!
+ * Just set dummy values when setting up your test.
+ * If the variable is used in a pipeline script that's being tested, set the variable on the script's {@link Binding}: 
  * </p>
  * <pre><code>
 setup:
 	def Jenkinsfile = loadPipelineScriptForTest("Jenkinsfile")
 	Jenkinsfile.getBinding().setVariable( "BRANCH_NAME", "master" )
+	Jenkinsfile.getBinding().setVariable( "env", [
+		"foo": "bar",
+		"fee": "fie"
+	])
  * </code></pre>
  * 
  * <a name="mock-shared-library-variables"></a>
@@ -319,7 +339,7 @@ then:
  * <p>
  * A Mock of the pipeline execution's {@link Binding} will be available at <code>getPipelineMock("getBinding")</code>.
  * Code-under-test might access this mock by calling {@link CpsScript#getBinding()}.
- * Usually, this is done by {@link GlobalVariable} implementations.
+ * Usually, this is done by {@link org.jenkinsci.plugins.workflow.cps.GlobalVariable GlobalVariable} implementations.
  * </p>
  * <p>
  * There is a Spock Spy of type {@link CpsScript} available at <code>getPipelineMock("CpsScript")</code>. 
