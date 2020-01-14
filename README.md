@@ -113,7 +113,7 @@ Testing
 
 Unit tests of `jenkins-spock` will happen automatically during the `test` phase of the Maven build.
 
-There is an `it` [Maven Profile]() that can be activated to run _integration tests_:
+There is an `it` [Maven Profile](https://maven.apache.org/guides/introduction/introduction-to-profiles.html) that can be activated to run _integration tests_:
 
 	mvn verify -Pit
 
