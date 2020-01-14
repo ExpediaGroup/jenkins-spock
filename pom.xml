@@ -117,27 +117,92 @@
 					<plugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-resources-plugin</artifactId>
+							<version>${resources.pluginVersion}</version>
+							<executions>
+								<execution>
+									<id>copy-integration-test-projects</id>
+									<phase>process-resources</phase>
+									<goals>
+										<goal>copy-resources</goal>
+									</goals>
+									<configuration>
+										<outputDirectory>${project.build.directory}/test-projects/</outputDirectory>
+										<resources>
+											<resource>
+												<directory>examples/helper-script</directory>
+												<targetPath>helper-script</targetPath>
+											</resource>
+											<resource>
+												<directory>examples/shared-library</directory>
+												<targetPath>shared-library</targetPath>
+											</resource>
+											<resource>
+												<directory>examples/whole-pipeline</directory>
+												<targetPath>whole-pipeline</targetPath>
+											</resource>
+										</resources>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-invoker-plugin</artifactId>
 							<version>${invoker.pluginVersion}</version>
 							<executions>
 								<execution>
-									<id>test-example-projects</id>
+									<id>fixup-integration-test-projects</id>
+									<phase>process-resources</phase>
+									<goals>
+										<goal>run</goal>
+									</goals>
+									<configuration>
+										<projectsDirectory>${project.build.directory}/test-projects</projectsDirectory>
+										<cloneProjectsTo />
+										<streamLogs>true</streamLogs>
+										<goals>-f pom.xml versions:update-properties</goals>
+										<properties>
+											<allowSnapshots>true</allowSnapshots>
+											<includes>${project.groupId}:${project.artifactId}</includes>
+											<includeProperties>jenkins-spock.version</includeProperties>
+											<newVersion>${project.version}</newVersion>
+											<generateBackupPoms>false</generateBackupPoms>
+										</properties>
+									</configuration>
+								</execution>
+								<execution>
+									<id>run-integration-test-projects</id>
 									<goals>
 										<goal>install</goal>
 										<goal>integration-test</goal>
 										<goal>verify</goal>
 									</goals>
 									<configuration>
-										<projectsDirectory>src/test/resources/test-projects</projectsDirectory>
+										<projectsDirectory>${project.build.directory}/test-projects</projectsDirectory>
 										<localRepositoryPath>${project.build.directory}/test-projects-repo</localRepositoryPath>
-										<cloneProjectsTo>${project.build.directory}/test-projects</cloneProjectsTo>
+										<cloneProjectsTo />
 										<streamLogs>true</streamLogs>
 									</configuration>
-								</execution>							
+								</execution>					
 							</executions>
 						</plugin>
 					</plugins>
 				</pluginManagement>
+				
+				<plugins>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+					</plugin>
+					
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-invoker-plugin</artifactId>
+					</plugin>
+				
+				</plugins>
 			</build>
 		</profile>
 		<profile>
@@ -394,15 +459,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>${clean.pluginVersion}</version>
-					<configuration>
-						<fileSets>
-							<fileSet>
-								<directory>examples/helper-script</directory>
-								<directory>examples/shared-library</directory>
-								<directory>examples/whole-pipeline</directory>
-							</fileSet>
-						</fileSets>
-					</configuration>
 				</plugin>
 
 				<plugin>
@@ -478,37 +534,6 @@
 					<artifactId>maven-install-plugin</artifactId>
 					<version>${install.pluginVersion}</version>
 				</plugin>
-				
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-invoker-plugin</artifactId>
-					<version>${invoker.pluginVersion}</version>
-					<inherited>false</inherited>
-					<configuration>
-						<skipInvocation>${maven.test.skip}</skipInvocation>
-					</configuration>
-					<executions>
-						<execution>
-							<id>fixup-exported-example-projects</id>
-							<phase>install</phase>
-							<goals>
-								<goal>run</goal>
-							</goals>
-							<configuration>
-								<projectsDirectory>examples</projectsDirectory>
-								<cloneProjectsTo />
-								<streamLogs>true</streamLogs>
-								<goals>versions:update-properties</goals>
-								<properties>
-									<allowDowngrade>true</allowDowngrade>
-									<allowSnapshots>false</allowSnapshots>
-									<includes>${project.groupId}:${project.artifactId}</includes>
-									<includeProperties>jenkins-spock.version</includeProperties>
-								</properties>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -535,26 +560,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${resources.pluginVersion}</version>
-					<executions>
-						<execution>
-							<id>export-example-projects</id>
-							<phase>install</phase>
-							<goals>
-								<goal>copy-resources</goal>
-							</goals>
-							<configuration>
-								<outputDirectory>examples</outputDirectory>
-								<resources>
-									<resource>
-										<directory>src/test/resources/test-projects</directory>
-										<excludes>
-											<exclude>**/invoker.properties</exclude>
-										</excludes>
-									</resource>
-								</resources>
-							</configuration>
-						</execution>
-					</executions>
 				</plugin>
 
 				<plugin>
@@ -750,11 +755,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-invoker-plugin</artifactId>
 			</plugin>
 			
 			<plugin>
