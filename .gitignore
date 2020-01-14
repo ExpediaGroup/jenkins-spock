@@ -8,3 +8,5 @@ target
 *.iws
 .idea
 *.pyc
+build.log
+**/*.versionsBackup

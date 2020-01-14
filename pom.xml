@@ -111,6 +111,36 @@
 
 	<profiles>
 		<profile>
+			<id>it</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-invoker-plugin</artifactId>
+							<version>${invoker.pluginVersion}</version>
+							<executions>
+								<execution>
+									<id>test-example-projects</id>
+									<goals>
+										<goal>install</goal>
+										<goal>integration-test</goal>
+										<goal>verify</goal>
+									</goals>
+									<configuration>
+										<projectsDirectory>src/test/resources/test-projects</projectsDirectory>
+										<localRepositoryPath>${project.build.directory}/test-projects-repo</localRepositoryPath>
+										<cloneProjectsTo>${project.build.directory}/test-projects</cloneProjectsTo>
+										<streamLogs>true</streamLogs>
+									</configuration>
+								</execution>							
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
 			<!-- publish JavaDoc & GroovyDoc to github-pages during a maven release -->
 			<id>gh-pages-javadoc</id>
 			<activation>
@@ -333,6 +363,7 @@
 					<version>${assembly.pluginVersion}</version>
 					<executions>
 						<execution>
+							<id>javadoc</id>
 							<phase>package</phase>
 							<goals>
 								<goal>single</goal>
@@ -343,6 +374,19 @@
 								</descriptors>
 							</configuration>
 						</execution>
+						<execution>
+							<id>example-projects</id>
+							<phase>install</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+							<configuration>
+								<attach>false</attach>
+								<descriptors>
+									<descriptor>src/main/assembly/example-projects.xml</descriptor>
+								</descriptors>
+							</configuration>
+						</execution>
 					</executions>
 				</plugin>
 
@@ -350,6 +394,15 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>${clean.pluginVersion}</version>
+					<configuration>
+						<fileSets>
+							<fileSet>
+								<directory>examples/helper-script</directory>
+								<directory>examples/shared-library</directory>
+								<directory>examples/whole-pipeline</directory>
+							</fileSet>
+						</fileSets>
+					</configuration>
 				</plugin>
 
 				<plugin>
@@ -432,20 +485,27 @@
 					<version>${invoker.pluginVersion}</version>
 					<inherited>false</inherited>
 					<configuration>
-						<projectsDirectory>src/test/resources/test-projects</projectsDirectory>
-						<localRepositoryPath>${project.build.directory}/test-projects-repo</localRepositoryPath>
-						<cloneProjectsTo>${project.build.directory}/test-projects</cloneProjectsTo>
-						<streamLogs>true</streamLogs>
 						<skipInvocation>${maven.test.skip}</skipInvocation>
 					</configuration>
 					<executions>
 						<execution>
-							<id>test-example-projects</id>
+							<id>fixup-exported-example-projects</id>
+							<phase>install</phase>
 							<goals>
-								<goal>install</goal>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
+								<goal>run</goal>
 							</goals>
+							<configuration>
+								<projectsDirectory>examples</projectsDirectory>
+								<cloneProjectsTo />
+								<streamLogs>true</streamLogs>
+								<goals>versions:update-properties</goals>
+								<properties>
+									<allowDowngrade>true</allowDowngrade>
+									<allowSnapshots>false</allowSnapshots>
+									<includes>${project.groupId}:${project.artifactId}</includes>
+									<includeProperties>jenkins-spock.version</includeProperties>
+								</properties>
+							</configuration>
 						</execution>
 					</executions>
 				</plugin>
@@ -475,6 +535,26 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${resources.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>export-example-projects</id>
+							<phase>install</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>examples</outputDirectory>
+								<resources>
+									<resource>
+										<directory>src/test/resources/test-projects</directory>
+										<excludes>
+											<exclude>**/invoker.properties</exclude>
+										</excludes>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 
 				<plugin>
