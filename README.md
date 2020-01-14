@@ -108,6 +108,17 @@ Building
 The build of **jenkins-spock** is built with Maven. Normal [Maven lifecycle phases](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html) apply.
 As long as you have a contemporary (1.8+) JDK and Maven (3.3+), it should build fine.
 
+Testing
+-------------------------
+
+Unit tests of `jenkins-spock` will happen automatically during the `test` phase of the Maven build.
+
+There is an `it` [Maven Profile](https://maven.apache.org/guides/introduction/introduction-to-profiles.html) that can be activated to run _integration tests_:
+
+	mvn verify -Pit
+
+The integration tests will run `mvn verify` on some of the [Working Example Projects](examples), using the current `jenkins-spock` code.
+
 Releasing
 -------------------------
 

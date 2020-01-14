@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 
 * Make the resource path lookup customizable for `JenkinsPipelineSpecification#loadPipelineScriptForTest`. To define your own path set `JenkinsPipelineSpecification.scriptClassPath`.
+* The `maven-invoker-plugin` now runs some of the "working example" projects as integration tests.
 
 ## 2.0.1
 
