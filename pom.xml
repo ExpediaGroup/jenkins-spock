@@ -412,19 +412,6 @@
 								</descriptors>
 							</configuration>
 						</execution>
-						<execution>
-							<id>example-projects</id>
-							<phase>install</phase>
-							<goals>
-								<goal>single</goal>
-							</goals>
-							<configuration>
-								<attach>false</attach>
-								<descriptors>
-									<descriptor>src/main/assembly/example-projects.xml</descriptor>
-								</descriptors>
-							</configuration>
-						</execution>
 					</executions>
 				</plugin>
 
