@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -117,37 +116,6 @@
 					<plugins>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-resources-plugin</artifactId>
-							<version>${resources.pluginVersion}</version>
-							<executions>
-								<execution>
-									<id>copy-integration-test-projects</id>
-									<phase>process-resources</phase>
-									<goals>
-										<goal>copy-resources</goal>
-									</goals>
-									<configuration>
-										<outputDirectory>${project.build.directory}/test-projects/</outputDirectory>
-										<resources>
-											<resource>
-												<directory>examples/helper-script</directory>
-												<targetPath>helper-script</targetPath>
-											</resource>
-											<resource>
-												<directory>examples/shared-library</directory>
-												<targetPath>shared-library</targetPath>
-											</resource>
-											<resource>
-												<directory>examples/whole-pipeline</directory>
-												<targetPath>whole-pipeline</targetPath>
-											</resource>
-										</resources>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-invoker-plugin</artifactId>
 							<version>${invoker.pluginVersion}</version>
 							<executions>
@@ -158,10 +126,15 @@
 										<goal>run</goal>
 									</goals>
 									<configuration>
-										<projectsDirectory>${project.build.directory}/test-projects</projectsDirectory>
-										<cloneProjectsTo />
+										<projectsDirectory>examples</projectsDirectory>
+										<pomIncludes>
+											<pomInclude>helper-script/pom.xml</pomInclude>
+											<pomInclude>shared-library/pom.xml</pomInclude>
+											<pomInclude>whole-pipeline/pom.xml</pomInclude>
+										</pomIncludes>
+										<cloneProjectsTo>${project.build.directory}/test-projects</cloneProjectsTo>
 										<streamLogs>true</streamLogs>
-										<goals>-f pom.xml versions:update-properties</goals>
+										<goals>versions:update-properties</goals>
 										<properties>
 											<allowSnapshots>true</allowSnapshots>
 											<includes>${project.groupId}:${project.artifactId}</includes>
