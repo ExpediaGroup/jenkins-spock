@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 * Make the resource path lookup customizable for `JenkinsPipelineSpecification#loadPipelineScriptForTest`. To define your own path set `JenkinsPipelineSpecification.scriptClassPath`.
 * The `maven-invoker-plugin` now runs some of the "working example" projects as integration tests.
+* The `parallel()` pipeline step is special-cased and will execute all of its closures during tests.
 
 ## 2.0.1
 

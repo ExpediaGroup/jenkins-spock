@@ -572,7 +572,18 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 					 */
 					Object result = mocks.get( _name )( *_args )
 					
-					if( _args != null && _args.length >= 1 && _args[_args.length-1] instanceof Closure ) {
+					if( _name == "parallel" ) {
+						// special-case the parallel() step to execute all of its closures
+						// thanks, oswalpalash!
+						_args.each { Map _parallel_args ->
+							_parallel_args.each { _parallel_key, _parallel_value ->
+								if( _parallel_value instanceof Closure ) {
+									_parallel_value()
+								}
+							}
+						}
+						
+					} else 	if( _args != null && _args.length >= 1 && _args[_args.length-1] instanceof Closure ) {
 						// there was at least one argument, and the last argument was a Closure
 						// this almost certainly means that the user's trying to pass the closure to the function as a "body"
 						// they probably want it to execute right now.

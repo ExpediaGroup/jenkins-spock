@@ -388,6 +388,8 @@
 			<version>2.3</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- 'parallel' step comes from workflow-cps -->
 
 	</dependencies>
 
