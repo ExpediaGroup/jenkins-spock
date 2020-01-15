@@ -137,6 +137,43 @@ then:
 ...
  * </code></pre>
  * 
+ * <h2>Step Bodies</h2>
+ * 
+ * <p>
+ * Pipeline steps with body blocks will have their bodies executed after the invocation is registered with their mock.
+ * <i>Any</i> call on a pipeline step where the last argument is a Groovy {@link Closure} will result in that Closure being executed.
+ * This is true even for Pipeline steps that don't normally accept body blocks - be careful!
+ * </p>
+ * For example, the <code>node(...) { ... }</code> step's body is automatically executed:
+ * <pre><code>
+when:
+	node( 'some-label' ) {
+		echo( "hello" )
+	}
+then:
+	1 * getPipelineMock("node")("some-label)
+	1 * getPipelineMock("echo")("hello")
+ * </code></pre>
+ * <p>
+ * The <code>parallel(...)</code> step is special-cased and will execute all closures that are found as values of the {@link Map} provided to the step.
+ * The closures will be executed serially in an unspecified order (dependent on the platform's {@link Set} implementation used for the Map).
+ * </p>
+ * For example:
+ * <pre><code>
+when:
+	parallel(
+		"stream 1" : {
+			echo( "hello 1" )
+		},
+		"stream 2" : {
+			echo( "hello 2" )
+		}
+	)
+then:
+	1 * getPipelineMock("echo")("hello 1")
+	1 * getPipelineMock("echo")("hello 2")
+ * </code></pre>
+ * 
  * <h2>Argument Capture</h2>
  * 
  * <p>
@@ -377,12 +414,14 @@ def methodMissing(String _name, _args) {
  * 
  * <a name="custom-classpath"></a>
  * <h1>Define Custom Classpath For Script Loading</h1>
- *
- * When your project defined custom source sets you need to set the classpath for the loading of your scripts manually. 
- * E.g. when you want to load your custom pipeline script that is located in `test/resources` you can do:
+ * <p>
+ * When your project has resources in locations other than Maven's default locations,
+ * you need to set the paths for the loading of your scripts manually. 
+ * For example, to you want to load a pipeline script that is located in `test/resources`:
+ * </p>
  *
  * <pre><code> 
-class PipelineTest extends JenkinsPipelineSpecification {*
+class PipelineTest extends JenkinsPipelineSpecification {
 	def setup() {
 		scriptClassPath = ["test/resources"] //Note that this is a collection and you can define multiple paths.
 	}
