@@ -1,0 +1,36 @@
+dependencies {
+	
+	jenkinsPlugins(
+		/* sshagent(...) step */
+		group: 'org.jenkins-ci.plugins',
+		name: 'ssh-agent',
+		version: '1.16',
+		ext: 'jar' )
+	
+	jenkinsPlugins(
+		/* sh(...) step */
+		group: 'org.jenkins-ci.plugins.workflow',
+		name: 'workflow-durable-task-step',
+		version: '2.21',
+		ext: 'jar' ) 
+	{
+		transitive=true
+	}
+	
+	jenkinsPlugins 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.10' /* libraryResource() */
+	jenkinsPlugins 'org.jenkins-ci.plugins:slack:2.3' /* slackSend */
+
+//	jenkinsPlugins 'org.jenkins-ci.plugins:ansicolor:0.6.2@jar'
+//	jenkinsPlugins 'org.jenkins-ci.plugins:durable-task:1.33@jar'
+//	jenkinsPlugins 'org.jenkins-ci.plugins:pipeline-stage-step:2.3@jar'
+//	jenkinsPlugins 'org.jenkins-ci.plugins:timestamper:1.10@jar'
+//	jenkinsPlugins 'org.jenkins-ci.plugins.workflow:workflow-api:2.37@jar'
+//	
+//	jenkinsPlugins 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.35@jar'
+//	
+//	jenkinsPlugins 'org.jenkins-ci.plugins:ws-cleanup:0.37@jar'
+//	jenkinsPlugins 
+//
+//	// plugin dependencies
+//	jenkinsPlugins 'com.cloudbees:groovy-cps:1.31'  // required by workflow-cps plugin
+}

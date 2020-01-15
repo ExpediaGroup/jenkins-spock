@@ -1,0 +1,87 @@
+apply plugin: 'groovy'
+
+sourceCompatibility = '1.8'
+
+sourceSets {
+	main {
+		groovy {
+			srcDirs = ['src']
+		}
+		resources {
+			srcDirs = ['vars', 'resources']
+		}
+	}
+	test {
+		groovy {
+			srcDirs = ['test']
+		}
+	}
+}
+
+configurations {
+	jenkinsPlugins {}
+}
+
+configurations {
+	all {
+		exclude group: 'org.slf4j', module: 'slf4j-jdk14'
+		resolutionStrategy {
+			force 'com.ibm.icu:icu4j:65.1'
+		}
+	}
+}
+
+apply from: 'repositories.gradle'
+apply from: 'jenkins_plugins.gradle'
+
+dependencies {
+	implementation 'org.codehaus.groovy:groovy-all:2.4.11'
+	
+	testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.0.1'
+	
+	// jenkins-spock's "provided" dependencies, that it uses but whose version we should manage ourselves
+	testImplementation 'org.jenkins-ci.main:jenkins-core:2.190.2'
+	testImplementation group: 'org.jenkins-ci.plugins.workflow', name: 'workflow-cps', version: '2.77', ext: 'jar'
+	testImplementation(
+		group: 'org.jenkins-ci.plugins.workflow',
+		name: 'workflow-step-api',
+		version: '2.21',
+		ext: 'jar' )
+	testImplementation 'org.jenkins-ci:symbol-annotation:1.20'
+	testImplementation 'javax.servlet:javax.servlet-api:4.0.1'
+	
+//
+//	testImplementation 'cglib:cglib-nodep:3.1'
+//	
+//	testImplementation 'org.objenesis:objenesis:2.1'
+//	testImplementation 'org.spockframework:spock-core:1.0-groovy-2.4'
+	
+	testImplementation configurations.jenkinsPlugins
+}
+
+configurations.all {
+	resolutionStrategy.dependencySubstitution.all { DependencySubstitution dependency ->
+		println ( dependency.requested )
+	}
+}
+
+task cleanScriptedPipelinesTestData(type: Delete) {
+	delete 'target/test-classes'
+}
+
+task prepareSharedLibraries(type: Copy) {
+	dependsOn tasks.cleanScriptedPipelinesTestData
+	from 'vars'
+	include '*'
+	into 'target/test-classes'
+}
+
+test {
+	dependsOn tasks.prepareSharedLibraries
+}
+
+task printClasspath {
+	doLast {
+		configurations.testRuntimeClasspath.each { println it }
+	}
+}

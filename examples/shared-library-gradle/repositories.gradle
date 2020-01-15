@@ -1,0 +1,6 @@
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.jenkins-ci.org/releases/' }
+	maven { url 'https://repo.jenkins-ci.org/public/' }
+	maven { url 'https://repo.spring.io/plugins-release/' } /* org.conmnectbot..jbcrypt:jbcrypt */
+}

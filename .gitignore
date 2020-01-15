@@ -10,3 +10,5 @@ target
 *.pyc
 build.log
 **/*.versionsBackup
+.gradle
+**/*gradle/build
