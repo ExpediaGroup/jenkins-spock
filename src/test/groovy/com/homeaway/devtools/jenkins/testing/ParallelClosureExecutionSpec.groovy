@@ -62,17 +62,16 @@ public class ParallelClosureExecutionSpec extends JenkinsPipelineSpecification {
 	def "parallel() handles non-closure arguments"() {
 		when:
 			parallel(
-				failFast: true,
-				"stream1": {
-					echo( "stream1" )
+				"stream 1" : {
+					echo( "hello 1" )
 				},
-				"stream2": {
-					echo( "stream2" )
+				"stream 2" : {
+					echo( "hello 2" )
 				}
 			)
 		then:
-			1 * getPipelineMock("echo")("stream1")
-			1 * getPipelineMock("echo")("stream2")
+			1 * getPipelineMock("echo")("hello 1")
+			1 * getPipelineMock("echo")("hello 2")
 	}
 	
 	def "parallel() mock is called even when its closures are subsequently executed"() {
@@ -102,6 +101,7 @@ public class ParallelClosureExecutionSpec extends JenkinsPipelineSpecification {
 		then:
 			1 * getPipelineMock("parallel")(_ as Map) >> { _parallel_args ->
 				Map parallel_map = _parallel_args[0]
+				
 				assert parallel_map instanceof Map
 				assert parallel_map.size() == 2
 				assert parallel_map.containsKey( "stream1" )
