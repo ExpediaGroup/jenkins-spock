@@ -62,6 +62,7 @@ public class ParallelClosureExecutionSpec extends JenkinsPipelineSpecification {
 	def "parallel() handles non-closure arguments"() {
 		when:
 			parallel(
+				"failFast": true,
 				"stream 1" : {
 					echo( "hello 1" )
 				},
