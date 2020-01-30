@@ -19,4 +19,4 @@ jobs:
     - name: Download Dependencies
       run: mvn --batch-mode dependency:go-offline -Pit
     - name: Build & Test with Maven
-      run: mvn --batch-mode verify -Pit
+      run: mvn --batch-mode verify -Pit -Dgpg.skip=true
