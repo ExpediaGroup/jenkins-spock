@@ -25,7 +25,7 @@ jobs:
     - name: Download Dependencies
       run: mvn --batch-mode dependency:go-offline -Pit
     - name: Build & Test with Maven
-      run: mvn verify 
+      run: mvn deploy 
         --batch-mode
         -P it
         -P noninteractive-gpg
