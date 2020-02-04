@@ -25,4 +25,8 @@ jobs:
     - name: Download Dependencies
       run: mvn --batch-mode dependency:go-offline -Pit
     - name: Build & Test with Maven
-      run: mvn --batch-mode verify -Pit -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
+      run: mvn verify 
+        --batch-mode
+        -P it
+        -P noninteractive-gpg
+        -D gpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"

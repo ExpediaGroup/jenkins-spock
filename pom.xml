@@ -179,6 +179,31 @@
 			</build>
 		</profile>
 		<profile>
+			<id>noninteractive-gpg</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-gpg-plugin</artifactId>
+							<version>${gpg.pluginVersion}</version>
+							<executions>
+								<execution>
+									<id>sign-artifacts</id>
+									<configuration>
+										<gpgArguments>
+											<arg>--pinentry-mode</arg>
+											<arg>loopback</arg>
+										</gpgArguments>
+									</configuration>
+								</execution>
+							</executions>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+		<profile>
 			<!-- publish JavaDoc & GroovyDoc to github-pages during a maven release -->
 			<id>gh-pages-javadoc</id>
 			<activation>
@@ -487,12 +512,6 @@
 							<goals>
 								<goal>sign</goal>
 							</goals>
-							<configuration>
-								<gpgArguments>
-									<arg>--pinentry-mode</arg>
-									<arg>loopback</arg>
-								</gpgArguments>
-							</configuration>
 						</execution>
 					</executions>
 				</plugin>
