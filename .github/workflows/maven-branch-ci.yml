@@ -18,7 +18,7 @@ jobs:
         echo "trusted-key 0xF0A00ADA5404ED0A" >> ~/.gnupg/gpg.conf &&
         echo "default-key 0xF0A00ADA5404ED0A" >> ~/.gnupg/gpg.conf &&
         gpg --list-secret-keys &&
-        cat ~/.m2/settings.xml
+        stat ~/.m2/settings.xml
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
