@@ -131,3 +131,6 @@ In order for this to succeed, the user running this must
 1. Configure GitHub credentials with `push` access to this repository.
 2. Configure Sonatype Nexus credentials with deploy access to the `com.homeaway` groupId.
 3. Configure a PGP identity so that the [`maven-gpg-plugin`](https://maven.apache.org/plugins/maven-gpg-plugin/) can sign artifacts.
+	1. Locally, run GPG 2.1 or newer
+	2. Set the default signing key to the key you want to use
+	3. Provide -Dgpg.passphrase on the command-line _or_ run interactively to be able to enter a passphrase
