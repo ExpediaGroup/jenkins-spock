@@ -27,7 +27,7 @@ jobs:
     - name: Build & Test with Maven
       run: mvn deploy 
         --batch-mode
-        -f .github/workflows/settings.xml
+        --settings .github/workflows/settings.xml
         -P it
         -P noninteractive-gpg
         -D gpg.passphrase="${{ secrets.GPG_PASSPHRASE }}"
