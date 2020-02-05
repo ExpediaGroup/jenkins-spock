@@ -20,7 +20,6 @@ package com.homeaway.devtools.jenkins.testing;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
@@ -28,7 +27,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 
 /**
  * Search through classes in the entire classpath for Jenkins Pipeline extensions.
@@ -46,27 +47,34 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 
 		Set<Class<?>> classes = new HashSet<>();
 
-		List<String> classnames = new FastClasspathScanner(_package.orElse("") ).scan().getNamesOfAllStandardClasses();
-
 		HashMap<String, Throwable> failures = new HashMap<>();
+		
+		try (ScanResult scan_result = new ClassGraph()
+				.verbose()
+				.enableClassInfo()
+				.whitelistPackages(_package.orElse("") )
+				.scan() )
+		{
+			for( ClassInfo info : scan_result.getAllClasses() ) {
+				
+				String classname = info.getName();
 
-		for(String classname: classnames) {
+				Class<?> clazz = null;
 
-			Class<?> clazz = null;
+				try {
+					clazz = Class.forName( classname );
+				} catch( ClassNotFoundException e ) {
+					failures.put( classname, e );
+					continue;
+				} catch( Throwable t ) {
+					// probably BS static initialization; hope you don't need to mock this class...
+					failures.put( classname, t );
+					continue;
+				}
 
-			try {
-				clazz = Class.forName( classname );
-			} catch( ClassNotFoundException e ) {
-				failures.put( classname, e );
-				continue;
-			} catch( Throwable t ) {
-				// probably BS static initialization; hope you don't need to mock this class...
-				failures.put( classname, t );
-				continue;
-			}
-
-			if( _supertype.isAssignableFrom( clazz ) ) {
-				classes.add( clazz );
+				if( _supertype.isAssignableFrom( clazz ) ) {
+					classes.add( clazz );
+				}
 			}
 		}
 
@@ -94,25 +102,33 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 
 		HashMap<String, Throwable> failures = new HashMap<>();
 
-		List<String> annotated_classnames = new FastClasspathScanner(_package.orElse("") ).scan().getNamesOfClassesWithAnnotation( _annotation );
-
-		for(String classname: annotated_classnames) {
-
-			Class<?> clazz = null;
-
-			try {
-				clazz = Class.forName( classname );
-			} catch( ClassNotFoundException e ) {
-				failures.put( classname, e );
-				continue;
-			} catch( Throwable t ) {
-				// probably BS static initialization; hope you don't need to mock this class...
-				failures.put( classname, t );
-				continue;
-			}
-
-			if( _supertype.isAssignableFrom( clazz ) ) {
-				annotated_classes.add( clazz );
+		try (ScanResult scan_result = new ClassGraph()
+				.verbose()
+				.enableClassInfo()
+				.enableAnnotationInfo()
+				.whitelistPackages(_package.orElse("") )
+				.scan() )
+		{
+			for( ClassInfo info : scan_result.getClassesWithAnnotation( _annotation.getName() ) ) {
+				
+				String classname = info.getName();
+	
+				Class<?> clazz = null;
+	
+				try {
+					clazz = Class.forName( classname );
+				} catch( ClassNotFoundException e ) {
+					failures.put( classname, e );
+					continue;
+				} catch( Throwable t ) {
+					// probably BS static initialization; hope you don't need to mock this class...
+					failures.put( classname, t );
+					continue;
+				}
+	
+				if( _supertype.isAssignableFrom( clazz ) ) {
+					annotated_classes.add( clazz );
+				}
 			}
 		}
 
