@@ -25,9 +25,10 @@ import org.codehaus.groovy.runtime.InvokerHelper
  * indirectly to prevent their names from causing problems with Java classloaders.
  * </p>
  * 
+ * @see <a target='_blank' href='https://issues.apache.org/jira/browse/GROOVY-7670'>GROOVY-7670</a>
+ * 
  * @author awitt
  * @since 2.1.1
- * @see <a target='_blank' href='https://issues.apache.org/jira/browse/GROOVY-7670'>GROOVY-7670</a>
  */
 public class InvalidlyNamedScriptWrapper extends Script {
 	

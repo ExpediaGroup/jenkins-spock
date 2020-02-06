@@ -17,6 +17,7 @@
 
 package com.homeaway.devtools.jenkins.testing.scripts;
 
+import com.homeaway.devtools.jenkins.testing.InvalidlyNamedScriptWrapper
 import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
 
 /**
@@ -29,6 +30,13 @@ import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
  *
  */
 public class InvalidClassNameSpec extends JenkinsPipelineSpecification {
+	
+	def "scripts whose names create invalid JVM class names are wrapped"() {
+		setup:
+			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-script.groovy" )
+		expect:
+			InvalidlyNamedScriptWrapper.class == a_script.getClass()
+	}
 	
 	def "can run scripts whose names create invalid JVM class names"() {
 		setup:
@@ -47,6 +55,21 @@ public class InvalidClassNameSpec extends JenkinsPipelineSpecification {
 			a_script.helper_method()
 		then:
 			1 * getPipelineMock( "echo" )( "helped" )
+	}
+	
+	def "can get global variables in scripts whose names create invalid JVM class names"() {
+		setup:
+			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-script.groovy" )
+		expect:
+			"GLOBAL" == a_script.global_variable
+	}
+	
+	def "can set script variables in scripts whose names create invalid JVM class names"() {
+		setup:
+			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-script.groovy" )
+			a_script.getBinding().setVariable("new_property", "expected")
+		expect:
+			"expected" == a_script.getBinding().getVariable("new_property")
 	}
 	
 }
