@@ -17,6 +17,8 @@ limitations under the License.
 
 package com.homeaway.devtools.jenkins.testing
 
+import javax.lang.model.SourceVersion
+
 import org.jenkinsci.plugins.workflow.cps.CpsScript
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -850,7 +852,11 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 
 		addPipelineMocksToObjects( script )
 		
-		return script
+		if( SourceVersion.isName( script_class.getSimpleName() ) ) {
+			return script
+		} else {
+			return new InvalidlyNamedScriptWrapper( script )
+		}
 	}
 
 	protected String[] generateScriptClasspath(String resourcePath) {

@@ -17,7 +17,6 @@
 
 package com.homeaway.devtools.jenkins.testing.scripts;
 
-import com.homeaway.devtools.jenkins.testing.InvalidlyNamedScriptInvoker
 import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
 
 /**
@@ -35,7 +34,7 @@ public class InvalidClassNameSpec extends JenkinsPipelineSpecification {
 		setup:
 			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-script.groovy" )
 		when:
-			InvalidlyNamedScriptInvoker.run( a_script )
+			a_script.run()
 		then:
 			1 * getPipelineMock( "echo" )( "hello" )
 			1 * getPipelineMock( "echo" )( "helped" )
@@ -45,7 +44,7 @@ public class InvalidClassNameSpec extends JenkinsPipelineSpecification {
 		setup:
 			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-script.groovy" )
 		when:
-			InvalidlyNamedScriptInvoker.invokeMethod( a_script, "helper_method" );
+			a_script.helper_method()
 		then:
 			1 * getPipelineMock( "echo" )( "helped" )
 	}
