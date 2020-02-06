@@ -25,7 +25,7 @@ import org.codehaus.groovy.runtime.InvokerHelper
  * indirectly to prevent their names from causing problems with Java classloaders.
  * </p>
  * 
- * @see <a href='https://issues.apache.org/jira/browse/GROOVY-7670'>GROOVY-7670</a>
+ * @see <a href='https://issues.apache.org/jira/browse/GROOVY-7670' target='_blank'>GROOVY-7670</a>
  * 
  * @author awitt
  * @since 2.1.1
