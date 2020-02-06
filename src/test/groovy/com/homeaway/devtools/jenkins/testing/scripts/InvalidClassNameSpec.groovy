@@ -24,10 +24,10 @@ import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
  * Groovy script contents can be in files with any name.
  * Unlike compiled classes, the names don't have to be valid JVM class names.
  * 
- * What happens when we try to load and test such a script?
+ * Ensure that we can still test such scripts.
  *
  * @author awitt
- *
+ * @since 2.1.1
  */
 public class InvalidClassNameSpec extends JenkinsPipelineSpecification {
 	
@@ -36,6 +36,14 @@ public class InvalidClassNameSpec extends JenkinsPipelineSpecification {
 			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-script.groovy" )
 		expect:
 			InvalidlyNamedScriptWrapper.class == a_script.getClass()
+	}
+	
+	def "scripts whose names create valid JVM class names are not wrapped"() {
+		setup:
+			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some_script.groovy" )
+		expect:
+			// Groovy generates subclasses of Script for each Script
+			Script.class.isAssignableFrom( a_script.getClass() )
 	}
 	
 	def "can run scripts whose names create invalid JVM class names"() {
