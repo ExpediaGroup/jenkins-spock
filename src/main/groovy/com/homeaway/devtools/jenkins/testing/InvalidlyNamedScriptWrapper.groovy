@@ -48,10 +48,12 @@ public class InvalidlyNamedScriptWrapper extends Script {
 		script.setBinding( _binding )
 	}
 
+	@Override
 	public Object getProperty(String _property) {
 		return script.getProperty( _property )
 	}
 
+	@Override
 	public void setProperty(String _property, Object _newValue) {
 		script.setProperty( _property, _newValue )
 	}
