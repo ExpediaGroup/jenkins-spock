@@ -15,18 +15,4 @@
  limitations under the License.
  */
 
-def binding_variable="BINDING"
-
-@groovy.transform.Field
-def global_variable="GLOBAL"
-
-node {
-	stage("greet") {
-		echo "hello"
-		helper_method()
-	}
-}
-
-def helper_method() {
-	echo "helped"
-}
+echo "The contents of a validly-named Script are not important"
