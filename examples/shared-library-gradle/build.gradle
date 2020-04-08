@@ -1,0 +1,70 @@
+plugins {
+    // Apply the groovy plugin to add support for Groovy
+    id 'groovy'
+    // Apply Gradle JPI plugin to simplify dependency management
+    id 'org.jenkins-ci.jpi' version '0.39.0-rc.7'
+}
+
+group 'com.example'
+version 'O.1-SNAPSHOT'
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src', 'vars']
+        }
+    }
+    test {
+        groovy {
+            srcDirs = ['test']
+        }
+        resources {
+            srcDirs = ['test/resources']
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+    maven { url 'https://repo.jenkins-ci.org/releases/' }
+}
+
+configurations {
+    all {
+        resolutionStrategy {
+            force 'com.ibm.icu:icu4j:66.1'
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:2.5.10'
+
+    testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.2'
+    testImplementation 'ch.qos.logback:logback-core:1.2.3'
+    testImplementation 'ch.qos.logback:logback-classic:1.2.3'
+    testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.190.2'
+    // provides stage() step
+    testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:2.3'
+    // provides isUnix() step
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.16'
+    // provides sh() step
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.35'
+    // provides libraryResource() step
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.10'
+    // provides slackSend() step
+    testImplementation 'org.jenkins-ci.plugins:slack:2.3'
+    // provides sshagent() step
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.16'
+
+    // plugin dependencies
+    testImplementation 'com.cloudbees:groovy-cps:1.31'  // required by workflow-cps plugin
+}
