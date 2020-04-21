@@ -2,7 +2,7 @@ plugins {
     // Apply the groovy plugin to add support for Groovy
     id 'groovy'
     // Apply Gradle JPI plugin to simplify dependency management
-    id 'org.jenkins-ci.jpi' version '0.39.0-rc.7'
+    id 'org.jenkins-ci.jpi' version '0.39.0'
 }
 
 def testLogLevel = project.findProperty('testLogLevel') ?: 'ERROR'
