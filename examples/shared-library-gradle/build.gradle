@@ -5,6 +5,8 @@ plugins {
     id 'org.jenkins-ci.jpi' version '0.39.0-rc.7'
 }
 
+def testLogLevel = project.findProperty('testLogLevel') ?: 'ERROR'
+
 group 'com.example'
 version 'O.1-SNAPSHOT'
 
@@ -82,4 +84,7 @@ task prepareSharedLibraries(type: Copy) {
 
 test {
     dependsOn tasks.prepareSharedLibraries
+    systemProperty 'root.loglevel', testLogLevel
+    systemProperty 'root.appender', 'Stdout'
+    systemProperty 'logdir', project.buildDir
 }
