@@ -84,7 +84,9 @@ task prepareSharedLibraries(type: Copy) {
 
 test {
     dependsOn tasks.prepareSharedLibraries
-    systemProperty 'root.loglevel', testLogLevel
-    systemProperty 'root.appender', 'Stdout'
-    systemProperty 'logdir', project.buildDir
+    systemProperties = [
+            'root.loglevel': testLogLevel,
+            'root.appender': 'Stdout',
+            'logdir': project.buildDir
+    ]
 }
