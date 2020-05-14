@@ -33,14 +33,6 @@ repositories {
     maven { url 'https://repo.jenkins-ci.org/releases/' }
 }
 
-configurations {
-    all {
-        resolutionStrategy {
-            force 'com.ibm.icu:icu4j:66.1'
-        }
-    }
-}
-
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.5.10'
 
@@ -48,7 +40,9 @@ dependencies {
     testImplementation 'ch.qos.logback:logback-core:1.2.3'
     testImplementation 'ch.qos.logback:logback-classic:1.2.3'
     testImplementation 'javax.servlet:javax.servlet-api:4.0.1'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.190.2'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.190.2', {
+        exclude group: 'com.ibm.icu', module: 'icu4j'
+    }
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2.77'
     // provides isUnix() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.16'
