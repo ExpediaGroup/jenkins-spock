@@ -28,59 +28,59 @@ class ExecTest extends JenkinsPipelineSpecification {
 
     def "Sanity-Check isUnix"() {
         expect:
-        isUnix() == null
+            isUnix() == null
     }
 
     def "Sanity-Check mocking isUnix"() {
         setup:
-        getPipelineMock('isUnix')() >> { return true }
+            getPipelineMock('isUnix')() >> { return true }
         expect:
-        isUnix() != null
+            isUnix() != null
     }
 
     def "Sanity-Check expecting isUnix"() {
         when:
-        Exec('ls')
+            Exec('ls')
         then:
-        _ * getPipelineMock('isUnix')() >> { return true }
-        1 * getPipelineMock('sh') ('ls')
+            _ * getPipelineMock('isUnix')() >> { return true }
+            1 * getPipelineMock('sh') ('ls')
     }
 
     def "(broken) Test on Windows"() {
         setup:
-        getPipelineMock('isUnix')() >> { return false }
+            getPipelineMock('isUnix')() >> { return false }
 
         when:
-        Exec('ls')
+            Exec('ls')
         then:
-        1 * getPipelineMock('isUnix') ()
-        1 * getPipelineMock('bat') ('ls')
+            1 * getPipelineMock('isUnix') ()
+            1 * getPipelineMock('bat') ('ls')
     }
 
     def "(broken) Test on Linux"() {
         setup:
-        getPipelineMock('isUnix')() >> { return true }
+            getPipelineMock('isUnix')() >> { return true }
 
         when:
-        Exec('ls')
+            Exec('ls')
         then:
-        1 * getPipelineMock('isUnix') ()
-        0 * getPipelineMock('sh') ('ls')
+            1 * getPipelineMock('isUnix') ()
+            0 * getPipelineMock('sh') ('ls')
     }
 
     def "Test on Windows"() {
         when:
-        Exec('ls')
+            Exec('ls')
         then:
-        1 * getPipelineMock('isUnix') () >> { return false }
-        1 * getPipelineMock('bat') ('ls')
+            1 * getPipelineMock('isUnix') () >> { return false }
+            1 * getPipelineMock('bat') ('ls')
     }
 
     def "Test on Linux"() {
         when:
-        Exec('ls')
+            Exec('ls')
         then:
-        1 * getPipelineMock('isUnix') () >> { return true }
-        1 * getPipelineMock('sh') ('ls')
+            1 * getPipelineMock('isUnix') () >> { return true }
+            1 * getPipelineMock('sh') ('ls')
     }
 }
