@@ -6,7 +6,7 @@
 	<groupId>com.homeaway.devtools.jenkins</groupId>
 	<artifactId>jenkins-spock</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0.1</version> <!-- http://semver.org -->
+	<version>2.1.3-SNAPSHOT</version> <!-- http://semver.org -->
 
 	<name>Jenkins pipeline support for Spock</name>
 	<description>Test Jenkins pipeline code with Spock</description>
