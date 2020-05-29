@@ -19,4 +19,7 @@ jobs:
     - name: Download Dependencies
       run: mvn --batch-mode dependency:go-offline -Pit
     - name: Build & Test with Maven
-      run: gawk && gawk --version
+      run: mvn verify 
+        --batch-mode
+        -P it
+        -D gpg.skip

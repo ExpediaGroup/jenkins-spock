@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.1.3
+
+_Release Date: TBD_
+
+### Updated
+
+* `jenkins-spock` version used in examples and documentation is updated to the released version on release.
+
 ## 2.1.2
 
 _Release Date: 2020-03-12_
