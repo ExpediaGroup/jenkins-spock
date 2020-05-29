@@ -780,10 +780,29 @@
 							<arguments>
 								<argument>-c</argument>
 								<argument><![CDATA[
-									grep -lr "<jenkins-spock.version>" . | xargs gawk -i inplace '{ gsub(/<jenkins-spock.version>[^<]+<\/jenkins-spock.version>/, "<jenkins-spock.version>2.1.3-SNAPSHOT</jenkins-spock.version>") }; { print }'
+									grep -lr "<jenkins-spock.version>" --include="*.xml" . | xargs gawk -i inplace '{ gsub(/<jenkins-spock.version>[^<]+<\/jenkins-spock.version>/, "<jenkins-spock.version>2.1.3-SNAPSHOT</jenkins-spock.version>") }; { print }'
 								]]>
 								</argument>
 							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>${scm.pluginVersion}</version>
+				<executions>
+					<execution>
+						<id>checkin-updated-examples</id>
+						<goals>
+							<goal>add</goal>
+							<goal>checkin</goal>
+						</goals>
+						<configuration>
+							<includes>**/*.xml</includes>
+							<message>Updating examples to jenkins-spock:${project.version}</message>
 						</configuration>
 					</execution>
 				</executions>
