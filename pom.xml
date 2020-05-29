@@ -567,7 +567,7 @@
 							</goals>
 							<configuration>
 								<includes>**/*.xml</includes>
-								<excludes>**/target/*</excludes>
+								<excludes>**/target/</excludes>
 								<message>Updating examples to jenkins-spock:${project.version}</message>
 							</configuration>
 						</execution>
