@@ -566,7 +566,6 @@
 								<goal>checkin</goal>
 							</goals>
 							<configuration>
-								<includes>**/*.xml</includes>
 								<message>Updating examples to jenkins-spock:${project.version}</message>
 							</configuration>
 						</execution>
