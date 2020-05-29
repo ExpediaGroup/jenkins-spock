@@ -543,12 +543,34 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>${release.pluginVersion}</version>
+					<configuration>
+						<preparationGoals>clean exec:exec@update-maven-example-versions scm:add@checkin-updated-examples scm:checkin@checkin-updated-examples verify</preparationGoals>
+					</configuration>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${resources.pluginVersion}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>${scm.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>checkin-updated-examples</id>
+							<goals>
+								<goal>add</goal>
+								<goal>checkin</goal>
+							</goals>
+							<configuration>
+								<includes>**/*.xml</includes>
+								<message>Updating examples to jenkins-spock:${project.version}</message>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 
 				<plugin>
@@ -687,6 +709,31 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>${exec.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>update-maven-example-versions</id>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<workingDirectory>${project.basedir}/examples</workingDirectory>
+								<executable>sh</executable>
+								<arguments>
+									<argument>-c</argument>
+									<argument><![CDATA[
+										grep -lr "<jenkins-spock.version>" --include="*.xml" . | xargs gawk -i inplace '{ gsub(/<jenkins-spock.version>[^<]+<\/jenkins-spock.version>/, "<jenkins-spock.version>${project.version}</jenkins-spock.version>") }; { print }'
+									]]>
+									</argument>
+								</arguments>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>${nexusStaging.pluginVersion}</version>
@@ -765,51 +812,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 			</plugin>
-			
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>${exec.pluginVersion}</version>
-				<executions>
-					<execution>
-						<id>update-maven-example-versions</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<workingDirectory>${project.basedir}/examples</workingDirectory>
-							<executable>sh</executable>
-							<arguments>
-								<argument>-c</argument>
-								<argument><![CDATA[
-									grep -lr "<jenkins-spock.version>" --include="*.xml" . | xargs gawk -i inplace '{ gsub(/<jenkins-spock.version>[^<]+<\/jenkins-spock.version>/, "<jenkins-spock.version>${project.version}</jenkins-spock.version>") }; { print }'
-								]]>
-								</argument>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-scm-plugin</artifactId>
-				<version>${scm.pluginVersion}</version>
-				<executions>
-					<execution>
-						<id>checkin-updated-examples</id>
-						<goals>
-							<goal>add</goal>
-							<goal>checkin</goal>
-						</goals>
-						<configuration>
-							<includes>**/*.xml</includes>
-							<message>Updating examples to jenkins-spock:${project.version}</message>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
 		</plugins>
 	</build>
 </project>
