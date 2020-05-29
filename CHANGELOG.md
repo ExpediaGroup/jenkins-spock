@@ -7,11 +7,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## 2.1.3
 
-_Release Date: TBD_
+_Release Date: 2020-05-29_
 
 ### Updated
 
-* `jenkins-spock` version used in examples and documentation is updated to the released version on release.
+* `jenkins-spock` version used in examples is updated to the released version on release.
 
 ## 2.1.2
 
