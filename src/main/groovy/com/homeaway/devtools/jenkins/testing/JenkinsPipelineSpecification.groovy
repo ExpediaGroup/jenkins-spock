@@ -20,6 +20,7 @@ package com.homeaway.devtools.jenkins.testing
 import javax.lang.model.SourceVersion
 
 import org.jenkinsci.plugins.workflow.cps.CpsScript
+import org.jenkinsci.plugins.workflow.steps.StepDescriptor
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -374,6 +375,40 @@ then:
  * <li>{@link Jenkins#getExtensionList(Class)} is stubbed to return instances of the {@literal @}{@link Extension}s of the provided type (actually, only the {@link ExtensionList#iterator()} method is stubbed, so use a for/each loop).</li>
  * </ol>
  * 
+ * <a name="mock-static-jenkins"></a>
+ * <h2>Mock Static Jenkins</h2>
+ * <p>
+ * Before any tests run, jenkins-spock scans the classpath(s) for Jenkins {@link Extension}s and determines their names.
+ * The canonical name of a Jenkins Pipeline Step extension is reported by the {@link StepDescriptor#getFunctionName()} <i>instance</i> method.
+ * Therefore, the descriptor must classloaded and then instantiated in order to get the right name.
+ * </p>
+ * <p>
+ * Some Jenkins extensions try to access the {@link Jenkins} singelton in <code>static { ... }</code> setup,
+ * or in their Descriptor's constructor.
+ * The mock Jenkins that is automatically created for every test case won't help here because no test cases are running yet:
+ * jenkins-spock is still setting up.
+ * </p>
+ * <p>
+ * In case a test suite involves classes that behave this way, jenkins-spock automatically creates a separate, static Spock mock of the {@link Jenkins} singelton
+ * and injects it into the {@link Jenkins} class before any Extensions are classloaded and before any Descriptors are instantiated.
+ * This mock cannot be stubbed and its interactions cannot be verified because
+ * <a target="_blank" href="http://spockframework.org/spock/docs/1.1-SNAPSHOT/all_in_one.html#_mocks">Spock mocks do not fully work outside a specification.</a>
+ * All this mock can do is return <code>null</code> for every method call, but that may be enough for some Extensions.
+ * </p>
+ * <h3>Stubbing Static Jenkins</h3>
+ * <p>
+ * If an Extension on a test suite's classpath not only interacts with the Jenkins singleton at classload- or Descriptor-instantiation-time,
+ * but also tries to interact with return values from methods called on the Jenkins singleton, the test suite must stub interactions with the static Jenkins access.
+ * Jenkins-spock provides an override-able {@link #makeStaticJenkins()} method to allow a test-suite to define its own Jenkins singleton object to use
+ * <b>outside, and only outside</b> the Spock test cases. You cannot stub a Spock mock of Jenkins here.
+ * Try <a target="_blank" href="https://site.mockito.org/">Mockito</a>.
+ * </p>
+ * <p>
+ * {@link #makeStaticJenkins()} will be called at most once by jenkins-spock; the result will be stored and re-used.
+ * Test-suites may call {@link #getStaticJenkins()} to access the static Jenkins singleton.
+ * Spock test features should never call either of these methods.
+ * </p> 
+ *  
  * <a name="mock-pipeline-execution"></a>
  * <h1>Mock Pipeline Execution</h1>
  * <p>

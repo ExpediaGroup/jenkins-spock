@@ -17,9 +17,7 @@
 
 package com.homeaway.devtools.jenkins.testing;
 
-import javax.servlet.ServletContext
-
-import org.jvnet.hudson.reactor.ReactorException
+import org.mockito.Mockito
 
 import jenkins.model.Jenkins
 
@@ -29,7 +27,7 @@ import jenkins.model.Jenkins
  * then tries to interact with the result of calling a method on that singleton.
  * This requires that the test-suite has successfully stubbed the interaction with Jenkins that happens
  * <i>outside</i> of normal Spock test cases. 
- *
+ * 
  * @author awitt
  * @since 2.1.4
  *
@@ -49,6 +47,18 @@ public class DescriptorTimeJenkinsInteractingSpec extends JenkinsPipelineSpecifi
 		 */
 		
 		System.setProperty( "jenkins.test-access.descriptor", "true" )
+	}
+	
+	/**
+	 * If we do not successfully stub {@link Jenkins#getAllItems()} to return non-null,
+	 * jenkins-spock won't be able to even load all of the Jenkins extensions in preparation
+	 * for this test suite.
+	 */
+	protected Jenkins makeStaticJenkins() {
+		
+		// Ridiculous: we're bringing Mockito into Spock so that we can mock a class outside of a Spock specification
+		return Mockito.mock( Jenkins.class );
+		
 	}
 	
 	def cleanupSpec() {

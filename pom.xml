@@ -417,6 +417,18 @@
 		</dependency>
 		
 		<!-- 'parallel' step comes from workflow-cps -->
+		
+		<!-- 
+			for mocking the Jenkins singleton outside Spock
+			Only done to verify that IF that is done properly, THEN
+			jenkins-spock can use that object 
+		-->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
