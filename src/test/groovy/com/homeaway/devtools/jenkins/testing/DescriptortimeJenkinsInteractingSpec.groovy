@@ -70,7 +70,7 @@ public class DescriptorTimeJenkinsInteractingSpec extends JenkinsPipelineSpecifi
 	 * The "test" is whether jenkins-spock can even get to the point where it can try to run this test,
 	 * because the jenkins-spock behavior being verified happens in jenkins-spock's setupSpec() method.
 	 */
-	def "test specifications can run when a Jenkins extension Descriptor tries to access the Jenkins singleton instance"() {
+	def "test specifications can run when a Jenkins extension Descriptor tries to work with the results of method calls on the Jenkins singleton instance"() {
 		when:
 			true
 		then:
