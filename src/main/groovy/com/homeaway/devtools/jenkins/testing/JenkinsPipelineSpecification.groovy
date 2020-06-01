@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory
 
 import hudson.Extension
 import hudson.ExtensionList
+import hudson.model.Hudson
 import jenkins.model.Jenkins
 import jenkins.model.Jenkins.JenkinsHolder
 import spock.lang.Specification
@@ -541,6 +542,20 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 											"src/test/resources", // if it's a test resource
 											"target/classes", // if it's on the main classpath
 											"target/test-classes"] // if it's on the test classpath
+	
+	/**
+	 * Implementation detail for the implementation of {@link #getStaticJenkins()}.
+	 * <ul>
+	 * 	<li><b>Do not</b> access this variable directly anywhere other than inside an implementation of {@link #getStaticJenkins()}.
+	 * 		Use {@link #getStaticJenkins()} instead.</li>
+	 * 	<li><b>Do not</b> set this variable directly anywhere other than inside an implementation of {@link #getStaticJenkins()}.
+	 * 		Override {@link #makeStaticJenkins()} to control its value instead.</li>
+	 * </ul>
+	 * 
+	 * @see #getStaticJenkins()
+	 * @see #makeStaticJenkins()
+	 */
+	private static Jenkins static_jenkins = null;
 
 	/**
 	 * Add Spock Mock objects for each of the pipeline extensions to each of the _objects.
@@ -978,6 +993,51 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	}
 	
 	/**
+	 * Get an instance of {@link Jenkins} to use when classes try to access Jenkins outside of test specifications.
+	 * <p>
+	 * This object will never be used during tests: during test specifications, <code>{@link #getPipelineMock}("Jenkins")</code>
+	 * will refer to a mock Jenkins that will capture all interactions with the Jenkins instance that happened during the specification.
+	 * </p>
+	 * 
+	 * @return A {@link Jenkins} instance to use when classes try to access Jenkins outside of test specifications.
+	 * 
+	 * @see #getStaticJenkins()
+	 */
+	protected Jenkins makeStaticJenkins() {
+
+		/* even though this is a Mock, it cannot be stubbed and interactions cannot be verified
+		 * since it will be interacted with outside a Spock test specification:
+		 * 
+		 * "Although the mocks can be created outside of a specification, they only work inside the scope of a specification.
+		 * So don’t perform any actions on them until they are attached to one."
+		 * 
+		 * -- http://spockframework.org/spock/docs/1.1-SNAPSHOT/all_in_one.html#_mocks
+		 * 
+		 * It will just return null or the default value for all interactions.
+		 */
+		return Mock(name: "StaticJenkins", Hudson.class)
+	}
+	
+	/**
+	 * Lazily get the instance of {@link Jenkins} to use when classes try to access Jenkins outside of test specifications.
+	 * <ul>
+	 * 	<li>Do not override this to change the static Jenkins used: override {@link #makeStaticJenkins()} to do that.</li>
+	 * 	<li>Do always use this to access the static Jenkins.</i>
+	 * </ul>
+	 * 
+	 * @return The {@link Jenkins} instance to use when classes try to access Jenkins outside of test specifications.
+	 * 
+	 * @see #makeStaticJenkins()
+	 */
+	protected final Jenkins getStaticJenkins() {
+		if( ! static_jenkins ) {
+			static_jenkins = makeStaticJenkins()
+		}
+		
+		return static_jenkins
+	}
+	
+	/**
 	 * Detect existing pipeline extensions and classes that should be able to call them.
 	 * <ol>
 	 * <li>Detect all classes in the current project (see {@link LocalProjectPipelineExtensionDetector}) that should delegate calls to pipeline extensions to Spock {@link #mocks}.</li>
@@ -999,6 +1059,14 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	 * @see #DEFAULT_TEST_CLASSES
 	 */
 	def setupSpec() {
+		
+		// put a Jenkins in place in case any @Extension classes try to access Jenkins
+		// when classloaded or when their Descriptor is instantiated
+		Jenkins.HOLDER = new JenkinsHolder() {
+			Jenkins getInstance() {
+				return getStaticJenkins()
+			}
+		}
 		
 		APipelineExtensionDetector classpath_scanner = new WholeClasspathPipelineExtensionDetector()
 		
@@ -1103,7 +1171,7 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 		 * ==========
 		 */
 		// the singleton itself...
-		final Jenkins jenkins = Mock()
+		final Hudson jenkins = Mock()
 		mocks.put( "Jenkins", jenkins )
 		
 		jenkins.getInstanceOrNull() >> jenkins
