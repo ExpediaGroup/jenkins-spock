@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## Unreleased
 
+* (nothing yet)
+
+## 2.1.4
+
+_Release Date: 2020-06-01_
+
 ### Added
 
 * Solution for Jenkins extensions that interact with the `Jenkins` singelton at classload- or Descriptor-instantiation-time:
