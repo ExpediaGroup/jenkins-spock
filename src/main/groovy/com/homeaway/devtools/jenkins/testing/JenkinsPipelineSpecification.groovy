@@ -20,7 +20,6 @@ package com.homeaway.devtools.jenkins.testing
 import javax.lang.model.SourceVersion
 
 import org.jenkinsci.plugins.workflow.cps.CpsScript
-import org.jenkinsci.plugins.workflow.steps.StepDescriptor
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -29,6 +28,7 @@ import hudson.ExtensionList
 import hudson.model.Hudson
 import jenkins.model.Jenkins
 import jenkins.model.Jenkins.JenkinsHolder
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -590,7 +590,8 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	 * @see #getStaticJenkins()
 	 * @see #makeStaticJenkins()
 	 */
-	private static Jenkins static_jenkins = null;
+	@Shared
+	private Jenkins static_jenkins = null;
 
 	/**
 	 * Add Spock Mock objects for each of the pipeline extensions to each of the _objects.

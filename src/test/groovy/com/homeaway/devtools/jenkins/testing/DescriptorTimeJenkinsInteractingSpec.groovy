@@ -19,6 +19,7 @@ package com.homeaway.devtools.jenkins.testing;
 
 import org.mockito.Mockito
 
+import hudson.model.Item
 import jenkins.model.Jenkins
 
 /**
@@ -57,7 +58,11 @@ public class DescriptorTimeJenkinsInteractingSpec extends JenkinsPipelineSpecifi
 	protected Jenkins makeStaticJenkins() {
 		
 		// Ridiculous: we're bringing Mockito into Spock so that we can mock a class outside of a Spock specification
-		return Mockito.mock( Jenkins.class );
+		Jenkins jenkins = Mockito.mock( Jenkins.class );
+		Mockito.when( jenkins.getAllItems() )
+		.thenReturn( new ArrayList<Item>() );
+		
+		return jenkins;
 		
 	}
 	
