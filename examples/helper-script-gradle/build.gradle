@@ -50,8 +50,5 @@ dependencies {
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.35'
     // provides sshagent() step
     testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.16'
-
-    // plugin dependencies
-    testImplementation 'com.cloudbees:groovy-cps:1.31'  // required by workflow-cps plugin
 }
 
