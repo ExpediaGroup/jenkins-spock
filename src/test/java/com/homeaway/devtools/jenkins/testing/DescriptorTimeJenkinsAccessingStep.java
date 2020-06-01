@@ -39,7 +39,7 @@ import jenkins.model.Jenkins;
  * </p>
  * <p>
  * This step further tries to interact with a result of a method call on the Jenkins object,
- * if the system property <code>"jenkins.test-access.descriptor</code> is equal to the String <code>true</code>.
+ * if the system property <code>jenkins.test-access.descriptor</code> is equal to the String <code>true</code>.
  * This allows test cases in jenkins-spock to demonstrate techniques for stubbing interactions with
  * this static Jenkins, while allowing test-cases that aren't related to the static Jenkins to continue
  * without issue.
