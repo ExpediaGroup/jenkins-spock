@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.5.10'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.12'
 
     testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.2'
     testImplementation 'ch.qos.logback:logback-core:1.2.3'
