@@ -7,7 +7,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## Unreleased
 
-* (nothing yet)
+### Added
+
+* The `retry()` pipeline step is special-cased and will execute its closure up to the specified count.
 
 ## 2.1.4
 
