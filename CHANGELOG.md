@@ -15,7 +15,7 @@ _Release Date: 2020-06-01_
 
 ### Added
 
-* Solution for Jenkins extensions that interact with the `Jenkins` singelton at classload- or Descriptor-instantiation-time:
+* Solution for Jenkins extensions that interact with the `Jenkins` singleton at classload- or Descriptor-instantiation-time:
 	* jenkins-spock automatically injects a mock Jenkins singleton _before_ any Jenkins extensions are classloaded or instantiated, so that `Jenkins.getInstanceOrNull()` is not `null`.
 	* `makeStaticJenkins()` method to allow test suites to provide their own pre-test-suite Jenkins singleton if necessary, such as if the spec needs to stub pre-test-suite interaction with `Jenkins`
 	* Please see the "Mock Jenkins" section of the `JenkinsPipelineSpecification` GroovyDoc.

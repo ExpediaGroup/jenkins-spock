@@ -383,13 +383,13 @@ then:
  * Therefore, the descriptor must classloaded and then instantiated in order to get the right name.
  * </p>
  * <p>
- * Some Jenkins extensions try to access the {@link Jenkins} singelton in <code>static { ... }</code> setup,
+ * Some Jenkins extensions try to access the {@link Jenkins} singleton in <code>static { ... }</code> setup,
  * or in their Descriptor's constructor.
  * The mock Jenkins that is automatically created for every test case won't help here because no test cases are running yet:
  * jenkins-spock is still setting up.
  * </p>
  * <p>
- * In case a test suite involves classes that behave this way, jenkins-spock automatically creates a separate, static Spock mock of the {@link Jenkins} singelton
+ * In case a test suite involves classes that behave this way, jenkins-spock automatically creates a separate, static Spock mock of the {@link Jenkins} singleton
  * and injects it into the {@link Jenkins} class before any Extensions are classloaded and before any Descriptors are instantiated.
  * This mock cannot be stubbed and its interactions cannot be verified because
  * <a target="_blank" href="http://spockframework.org/spock/docs/1.1-SNAPSHOT/all_in_one.html#_mocks">Spock mocks do not fully work outside a specification.</a>
