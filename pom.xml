@@ -6,7 +6,7 @@
 	<groupId>com.homeaway.devtools.jenkins</groupId>
 	<artifactId>jenkins-spock</artifactId>
 	<packaging>jar</packaging>
-	<version>2.1.3-SNAPSHOT</version> <!-- http://semver.org -->
+	<version>2.1.5-SNAPSHOT</version> <!-- http://semver.org -->
 
 	<name>Jenkins pipeline support for Spock</name>
 	<description>Test Jenkins pipeline code with Spock</description>
@@ -68,6 +68,7 @@
 		<compiler.pluginVersion>3.8.0</compiler.pluginVersion>
 		<deploy.pluginVersion>2.8.2</deploy.pluginVersion>
 		<enforcer.pluginVersion>3.0.0-M2</enforcer.pluginVersion>
+		<exec.pluginVersion>1.6.0</exec.pluginVersion>
 		<gpg.pluginVersion>1.5</gpg.pluginVersion>
 		<install.pluginVersion>2.5.2</install.pluginVersion>
 		<invoker.pluginVersion>3.2.1</invoker.pluginVersion>
@@ -76,6 +77,7 @@
 		<nexusStaging.pluginVersion>1.6.7</nexusStaging.pluginVersion>
 		<release.pluginVersion>2.5.3</release.pluginVersion>
 		<resources.pluginVersion>3.1.0</resources.pluginVersion>
+		<scm.pluginVersion>1.11.2</scm.pluginVersion>
 		<site.pluginVersion>3.7.1</site.pluginVersion>
 		<source.pluginVersion>2.2.1</source.pluginVersion>
 		<surefire.pluginVersion>2.22.0</surefire.pluginVersion>
@@ -415,6 +417,18 @@
 		</dependency>
 		
 		<!-- 'parallel' step comes from workflow-cps -->
+		
+		<!-- 
+			for mocking the Jenkins singleton outside Spock
+			Only done to verify that IF that is done properly, THEN
+			jenkins-spock can use that object 
+		-->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -541,12 +555,35 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
 					<version>${release.pluginVersion}</version>
+					<configuration>
+						<preparationGoals>clean exec:exec@update-maven-example-versions scm:add@checkin-updated-examples scm:checkin@checkin-updated-examples verify</preparationGoals>
+					</configuration>
 				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${resources.pluginVersion}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>${scm.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>checkin-updated-examples</id>
+							<goals>
+								<goal>add</goal>
+								<goal>checkin</goal>
+							</goals>
+							<configuration>
+								<includes>**/*.xml</includes>
+								<excludes>**/target/</excludes>
+								<message>[automated] Updating examples to jenkins-spock:${project.version}</message>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 
 				<plugin>
@@ -685,6 +722,31 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>${exec.pluginVersion}</version>
+					<executions>
+						<execution>
+							<id>update-maven-example-versions</id>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<workingDirectory>${project.basedir}/examples</workingDirectory>
+								<executable>sh</executable>
+								<arguments>
+									<argument>-c</argument>
+									<argument><![CDATA[
+										grep -lr "<jenkins-spock.version>" --include="*.xml" . | xargs gawk -i inplace '{ gsub(/<jenkins-spock.version>[^<]+<\/jenkins-spock.version>/, "<jenkins-spock.version>${project.version}</jenkins-spock.version>") }; { print }'
+									]]>
+									</argument>
+								</arguments>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>${nexusStaging.pluginVersion}</version>
@@ -763,7 +825,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
 			</plugin>
-
 		</plugins>
 	</build>
 </project>

@@ -16,7 +16,7 @@ Add this library to `pom.xml` in the `test` scope:
 </dependency>
 ```
 
-Check the [CHANGELOG.md](CHANGELOG.md) to find the available versions.
+Check the [CHANGELOG.md](CHANGELOG.md) to find details about the available versions.
 
 Working Examples
 -------------------------

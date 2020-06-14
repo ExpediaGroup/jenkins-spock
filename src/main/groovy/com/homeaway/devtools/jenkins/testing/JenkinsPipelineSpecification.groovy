@@ -25,8 +25,10 @@ import org.slf4j.LoggerFactory
 
 import hudson.Extension
 import hudson.ExtensionList
+import hudson.model.Hudson
 import jenkins.model.Jenkins
 import jenkins.model.Jenkins.JenkinsHolder
+import spock.lang.Shared
 import spock.lang.Specification
 
 /**
@@ -373,6 +375,40 @@ then:
  * <li>{@link Jenkins#getExtensionList(Class)} is stubbed to return instances of the {@literal @}{@link Extension}s of the provided type (actually, only the {@link ExtensionList#iterator()} method is stubbed, so use a for/each loop).</li>
  * </ol>
  * 
+ * <a name="mock-static-jenkins"></a>
+ * <h2>Mock Static Jenkins</h2>
+ * <p>
+ * Before any tests run, jenkins-spock scans the classpath(s) for Jenkins {@link Extension}s and determines their names.
+ * The canonical name of a Jenkins Pipeline Step extension is reported by the {@link StepDescriptor#getFunctionName()} <i>instance</i> method.
+ * Therefore, the descriptor must classloaded and then instantiated in order to get the right name.
+ * </p>
+ * <p>
+ * Some Jenkins extensions try to access the {@link Jenkins} singelton in <code>static { ... }</code> setup,
+ * or in their Descriptor's constructor.
+ * The mock Jenkins that is automatically created for every test case won't help here because no test cases are running yet:
+ * jenkins-spock is still setting up.
+ * </p>
+ * <p>
+ * In case a test suite involves classes that behave this way, jenkins-spock automatically creates a separate, static Spock mock of the {@link Jenkins} singelton
+ * and injects it into the {@link Jenkins} class before any Extensions are classloaded and before any Descriptors are instantiated.
+ * This mock cannot be stubbed and its interactions cannot be verified because
+ * <a target="_blank" href="http://spockframework.org/spock/docs/1.1-SNAPSHOT/all_in_one.html#_mocks">Spock mocks do not fully work outside a specification.</a>
+ * All this mock can do is return <code>null</code> for every method call, but that may be enough for some Extensions.
+ * </p>
+ * <h3>Stubbing Static Jenkins</h3>
+ * <p>
+ * If an Extension on a test suite's classpath not only interacts with the Jenkins singleton at classload- or Descriptor-instantiation-time,
+ * but also tries to interact with return values from methods called on the Jenkins singleton, the test suite must stub interactions with the static Jenkins access.
+ * Jenkins-spock provides an override-able {@link #makeStaticJenkins()} method to allow a test-suite to define its own Jenkins singleton object to use
+ * <b>outside, and only outside</b> the Spock test cases. You cannot stub a Spock mock of Jenkins here.
+ * Try <a target="_blank" href="https://site.mockito.org/">Mockito</a>.
+ * </p>
+ * <p>
+ * {@link #makeStaticJenkins()} will be called at most once by jenkins-spock; the result will be stored and re-used.
+ * Test-suites may call {@link #getStaticJenkins()} to access the static Jenkins singleton.
+ * Spock test features should never call either of these methods.
+ * </p> 
+ *  
  * <a name="mock-pipeline-execution"></a>
  * <h1>Mock Pipeline Execution</h1>
  * <p>
@@ -541,6 +577,21 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 											"src/test/resources", // if it's a test resource
 											"target/classes", // if it's on the main classpath
 											"target/test-classes"] // if it's on the test classpath
+	
+	/**
+	 * Implementation detail for the implementation of {@link #getStaticJenkins()}.
+	 * <ul>
+	 * 	<li><b>Do not</b> access this variable directly anywhere other than inside an implementation of {@link #getStaticJenkins()}.
+	 * 		Use {@link #getStaticJenkins()} instead.</li>
+	 * 	<li><b>Do not</b> set this variable directly anywhere other than inside an implementation of {@link #getStaticJenkins()}.
+	 * 		Override {@link #makeStaticJenkins()} to control its value instead.</li>
+	 * </ul>
+	 * 
+	 * @see #getStaticJenkins()
+	 * @see #makeStaticJenkins()
+	 */
+	@Shared
+	private Jenkins static_jenkins = null;
 
 	/**
 	 * Add Spock Mock objects for each of the pipeline extensions to each of the _objects.
@@ -978,6 +1029,51 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	}
 	
 	/**
+	 * Get an instance of {@link Jenkins} to use when classes try to access Jenkins outside of test specifications.
+	 * <p>
+	 * This object will never be used during tests: during test specifications, <code>{@link #getPipelineMock}("Jenkins")</code>
+	 * will refer to a mock Jenkins that will capture all interactions with the Jenkins instance that happened during the specification.
+	 * </p>
+	 * 
+	 * @return A {@link Jenkins} instance to use when classes try to access Jenkins outside of test specifications.
+	 * 
+	 * @see #getStaticJenkins()
+	 */
+	protected Jenkins makeStaticJenkins() {
+
+		/* even though this is a Mock, it cannot be stubbed and interactions cannot be verified
+		 * since it will be interacted with outside a Spock test specification:
+		 * 
+		 * "Although the mocks can be created outside of a specification, they only work inside the scope of a specification.
+		 * So don’t perform any actions on them until they are attached to one."
+		 * 
+		 * -- http://spockframework.org/spock/docs/1.1-SNAPSHOT/all_in_one.html#_mocks
+		 * 
+		 * It will just return null or the default value for all interactions.
+		 */
+		return Mock(name: "StaticJenkins", Hudson.class)
+	}
+	
+	/**
+	 * Lazily get the instance of {@link Jenkins} to use when classes try to access Jenkins outside of test specifications.
+	 * <ul>
+	 * 	<li>Do not override this to change the static Jenkins used: override {@link #makeStaticJenkins()} to do that.</li>
+	 * 	<li>Do always use this to access the static Jenkins.</i>
+	 * </ul>
+	 * 
+	 * @return The {@link Jenkins} instance to use when classes try to access Jenkins outside of test specifications.
+	 * 
+	 * @see #makeStaticJenkins()
+	 */
+	protected final Jenkins getStaticJenkins() {
+		if( ! static_jenkins ) {
+			static_jenkins = makeStaticJenkins()
+		}
+		
+		return static_jenkins
+	}
+	
+	/**
 	 * Detect existing pipeline extensions and classes that should be able to call them.
 	 * <ol>
 	 * <li>Detect all classes in the current project (see {@link LocalProjectPipelineExtensionDetector}) that should delegate calls to pipeline extensions to Spock {@link #mocks}.</li>
@@ -999,6 +1095,14 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	 * @see #DEFAULT_TEST_CLASSES
 	 */
 	def setupSpec() {
+		
+		// put a Jenkins in place in case any @Extension classes try to access Jenkins
+		// when classloaded or when their Descriptor is instantiated
+		Jenkins.HOLDER = new JenkinsHolder() {
+			Jenkins getInstance() {
+				return getStaticJenkins()
+			}
+		}
 		
 		APipelineExtensionDetector classpath_scanner = new WholeClasspathPipelineExtensionDetector()
 		
@@ -1103,7 +1207,7 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 		 * ==========
 		 */
 		// the singleton itself...
-		final Jenkins jenkins = Mock()
+		final Hudson jenkins = Mock()
 		mocks.put( "Jenkins", jenkins )
 		
 		jenkins.getInstanceOrNull() >> jenkins
