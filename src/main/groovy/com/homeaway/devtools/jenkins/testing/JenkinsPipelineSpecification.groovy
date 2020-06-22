@@ -894,14 +894,39 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 			resource_path = String.join( "/", path_parts[0..path_parts.length-2] )
 			resource_path = "/${resource_path}/"
 		}
-
+		
+		/* doesn't use same classloader as rest of process */
 		GroovyScriptEngine script_engine = new GroovyScriptEngine(generateScriptClasspath(resource_path))
 
 		Class<Script> script_class = script_engine.loadScriptByName( "${filename}" )
 
 		Script script = script_class.newInstance()
+		/* */
+		
+		
+		/* Should use same classloader as rest of process
+		GroovyClassLoader classloader = new GroovyClassLoader()
+        File script_file = null
 
-		addPipelineMocksToObjects( script )
+		for ( String classpath_entry : generateScriptClasspath( resource_path ) ) {
+
+			classloader.addClasspath( classpath_entry )
+			script_file = new File( classpath_entry, filename )
+
+			if ( script_file.exists() ) {
+				break
+			}
+		}
+		
+        if ( script_file == null ) {
+            throw new IOException("Unable to locate " + "${filename}")
+        }
+
+        Class<Script> script_class = classloader.parseClass(script_file.getText(Charset.defaultCharset().displayName()))
+        Script script = script_class.newInstance()
+		/* */
+		
+        addPipelineMocksToObjects( script )
 		
 		if( SourceVersion.isName( script_class.getSimpleName() ) ) {
 			return script
