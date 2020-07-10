@@ -80,5 +80,23 @@ public class InvalidClassNameSpec extends JenkinsPipelineSpecification {
 			"expected" == a_script.getBinding().getVariable("new_property")
 	}
 	
+	def "can run methods in helper scripts whose names create invalid JVM class"() {
+		setup:
+			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-helper-script.groovy" )
+		when:
+			a_script.helper_method()
+		then:
+			1 * getPipelineMock( "echo" )( "helped" )
+	}
+	
+	def "can run methods in helper scripts whose names create invalid JVM class names from other methods in those scripts"() {
+		setup:
+			def a_script = loadPipelineScriptForTest( "com/homeaway/devtools/jenkins/testing/scripts/some-helper-script.groovy" )
+		when:
+			a_script.composed_method()
+		then:
+			1 * getPipelineMock( "echo" )( "internal" )
+	}
+	
 }
 
