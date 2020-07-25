@@ -425,7 +425,7 @@ def methodMissing(String _name, _args) {
  * <pre><code> 
 class PipelineTest extends JenkinsPipelineSpecification {
 	def setup() {
-		scriptClassPath = ["test/resources"] //Note that this is a collection and you can define multiple paths.
+ 		script_class_path = ["test/resources"] //Note that this is a collection and you can define multiple paths.
 	}
 
 	def "Some test) {
