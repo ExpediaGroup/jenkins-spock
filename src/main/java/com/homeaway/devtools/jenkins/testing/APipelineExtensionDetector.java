@@ -18,6 +18,7 @@ limitations under the License.
 package com.homeaway.devtools.jenkins.testing;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,13 +81,10 @@ public abstract class APipelineExtensionDetector {
 
 		for( Class<?> step_descriptor_class : getClassesWithAnnotationOfTypeInPackage(Extension.class, StepDescriptor.class, _package ) ) {
 			try {
-				StepDescriptor descriptor = (StepDescriptor) step_descriptor_class.newInstance();
+				StepDescriptor descriptor = (StepDescriptor) step_descriptor_class.getDeclaredConstructor().newInstance();
 
 				names.add( descriptor.getFunctionName() );
-			} catch( InstantiationException e ) {
-				failures.put( step_descriptor_class.getName(), e );
-				continue;
-			} catch( IllegalAccessException e ) {
+			} catch( IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e ) {
 				failures.put( step_descriptor_class.getName(), e );
 				continue;
 			}
@@ -122,13 +120,10 @@ public abstract class APipelineExtensionDetector {
 
 		for( Class<?> global_variable_class : getClassesWithAnnotationOfTypeInPackage(Extension.class, GlobalVariable.class, _package ) ) {
 			try {
-				GlobalVariable variable = (GlobalVariable) global_variable_class.newInstance();
+				GlobalVariable variable = (GlobalVariable) global_variable_class.getDeclaredConstructor().newInstance();
 
 				names.add( variable.getName() );
-			} catch( InstantiationException e ) {
-				failures.put( global_variable_class.getName(), e );
-				continue;
-			} catch( IllegalAccessException e ) {
+			} catch( IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e ) {
 				failures.put( global_variable_class.getName(), e );
 				continue;
 			}
