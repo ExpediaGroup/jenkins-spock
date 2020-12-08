@@ -11,3 +11,4 @@ target
 build.log
 **/*.versionsBackup
 .DS_Store
+logdir*

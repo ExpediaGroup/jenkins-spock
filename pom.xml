@@ -277,12 +277,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-			<version>0.9.12</version>
-		</dependency>
-
-		<dependency>
 			<groupId>io.github.classgraph</groupId>
 			<artifactId>classgraph</artifactId>
 			<version>4.8.104</version>
@@ -424,10 +418,10 @@
 
 		<!-- 'parallel' step comes from workflow-cps -->
 
-		<!-- 
+		<!--
 			for mocking the Jenkins singleton outside Spock
 			Only done to verify that IF that is done properly, THEN
-			jenkins-spock can use that object 
+			jenkins-spock can use that object
 		-->
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -441,7 +435,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -482,7 +475,7 @@
 					<artifactId>maven-dependency-plugin</artifactId>
 					<configuration>
 						<usedDependencies>
-							<!-- these will be used by Groovy code, when the included test utilities 
+							<!-- these will be used by Groovy code, when the included test utilities
 								are spun up during a test run -->
 							<usedDependency>cglib:cglib-nodep</usedDependency>
 							<usedDependency>junit:junit</usedDependency>
