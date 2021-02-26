@@ -23,13 +23,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.5.13'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.14'
 
     testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.4'
     testImplementation 'ch.qos.logback:logback-core:1.2.3'
     testImplementation 'ch.qos.logback:logback-classic:1.2.3'
     testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.266', {
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.281', {
         // exclude following to avoid errors from FastClasspathScanner
         //      Unknown constant pool tag 60 in classfile
         //      com/ibm/icu/impl/data/LocaleElements_zh__PINYIN.class
@@ -38,13 +38,13 @@ dependencies {
     // provides stage() step
     testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:2.5'
     // provides sh() step
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.36'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.37'
     // provides GlobalVariable
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.17'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.18'
     // provides slackSend() step
-    testImplementation 'org.jenkins-ci.plugins:slack:2.43'
+    testImplementation 'org.jenkins-ci.plugins:slack:2.45'
     // provides sshagent() step
-    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.20'
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.21'
 
     // plugin dependencies
     testImplementation 'com.cloudbees:groovy-cps:1.31'  // required by workflow-cps plugin

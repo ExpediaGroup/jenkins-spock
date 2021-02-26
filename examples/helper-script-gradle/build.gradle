@@ -2,7 +2,7 @@ plugins {
     // Apply the groovy plugin to add support for Groovy
     id 'groovy'
     // Apply Gradle JPI plugin to simplify dependency management
-    id 'org.jenkins-ci.jpi' version '0.39.0-rc.7'
+    id 'org.jenkins-ci.jpi' version '0.39.0'
 }
 
 group 'com.example'
@@ -34,24 +34,24 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.5.13'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.14'
 
     testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.4'
     testImplementation 'ch.qos.logback:logback-core:1.2.3'
     testImplementation 'ch.qos.logback:logback-classic:1.2.3'
     testImplementation 'javax.servlet:javax.servlet-api:4.0.1'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.266', {
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.281', {
         // exclude following to avoid errors from FastClasspathScanner
         //      Unknown constant pool tag 60 in classfile
         //      com/ibm/icu/impl/data/LocaleElements_zh__PINYIN.class
         exclude group: 'jaxen', module: 'jaxen'
     }
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2.85'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2.89'
     // provides isUnix() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.23'
     // provides sh() step
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.36'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.37'
     // provides sshagent() step
-    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.20'
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.21'
 }
 
