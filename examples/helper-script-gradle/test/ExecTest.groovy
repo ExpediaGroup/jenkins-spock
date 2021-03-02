@@ -1,6 +1,6 @@
 import com.homeaway.devtools.jenkins.testing.JenkinsPipelineSpecification
 
-// Ideally should be names ExecSpec.groovy
+// Ideally should be named ExecSpec.groovy
 // if I name it ExecSpec, I get the following stack trace
 //
 //java.lang.NoClassDefFoundError: Exec (wrong name: exec)
