@@ -2,7 +2,7 @@ plugins {
     // Apply the groovy plugin to add support for Groovy
     id 'groovy'
     // Apply Gradle JPI plugin to simplify dependency management
-    id 'org.jenkins-ci.jpi' version '0.42.0'
+    id 'org.jenkins-ci.jpi' version '0.43.0-rc.5'
 }
 
 def testLogLevel = project.findProperty('testLogLevel') ?: 'ERROR'
@@ -40,13 +40,13 @@ dependencies {
     // provides stage() step
     testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:2.5'
     // provides sh() step
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.37'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.38'
     // provides GlobalVariable
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.18'
     // provides slackSend() step
-    testImplementation 'org.jenkins-ci.plugins:slack:2.45'
+    testImplementation 'org.jenkins-ci.plugins:slack:2.46'
     // provides sshagent() step
-    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.21'
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.22'
 
     // plugin dependencies
     testImplementation 'com.cloudbees:groovy-cps:1.31'  // required by workflow-cps plugin
