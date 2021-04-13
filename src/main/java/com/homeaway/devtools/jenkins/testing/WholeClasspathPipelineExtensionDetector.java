@@ -47,10 +47,10 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 		Set<Class<?>> classes = new HashSet<>();
 
 		List<String> classnames = new ClassGraph()
-				.enableAnnotationInfo()
-				.enableClassInfo()
-				.acceptPackages(_package.orElse(""))
-				.scan().getAllStandardClasses().getNames();
+			.enableAnnotationInfo()
+			.enableClassInfo()
+			.acceptPackages(_package.orElse(""))
+			.scan().getAllStandardClasses().getNames();
 
 		HashMap<String, Throwable> failures = new HashMap<>();
 
@@ -81,10 +81,10 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 				}
 			} else {
 				LOG.warn(
-						"Failed to get some classes of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
-						_supertype,
-						_package,
-						failures.keySet() );
+					"Failed to get some classes of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
+					_supertype,
+					_package,
+					failures.keySet() );
 			}
 		}
 
@@ -99,10 +99,10 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 		HashMap<String, Throwable> failures = new HashMap<>();
 
 		List<String> annotated_classnames = new ClassGraph()
-				.enableAnnotationInfo()
-				.enableClassInfo()
-				.acceptPackages(_package.orElse(""))
-				.scan().getClassesWithAnnotation( _annotation.getName() ).getNames();
+			.enableAnnotationInfo()
+			.enableClassInfo()
+			.acceptPackages(_package.orElse(""))
+			.scan().getClassesWithAnnotation( _annotation.getName() ).getNames();
 
 		for(String classname: annotated_classnames) {
 
@@ -131,11 +131,11 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 				}
 			} else {
 				LOG.warn(
-						"Failed to get some classes annotated with [{}] of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
-						_annotation,
-						_supertype,
-						_package,
-						failures.keySet() );
+					"Failed to get some classes annotated with [{}] of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
+					_annotation,
+					_supertype,
+					_package,
+					failures.keySet() );
 			}
 		}
 
