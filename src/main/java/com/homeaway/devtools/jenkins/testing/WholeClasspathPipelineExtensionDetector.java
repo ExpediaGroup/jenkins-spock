@@ -131,11 +131,11 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 				}
 			} else {
 				LOG.warn(
-						"Failed to get some classes annotated with [{}] of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
-						_annotation,
-						_supertype,
-						_package,
-						failures.keySet() );
+					"Failed to get some classes annotated with [{}] of type [{}] in package [{}]. For detailed error messages, set the system property PipelineExtensionDetector.expandFailures=true. Failures: [{}]",
+					_annotation,
+					_supertype,
+					_package,
+					failures.keySet() );
 			}
 		}
 
