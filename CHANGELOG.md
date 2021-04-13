@@ -9,6 +9,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 * (nothing yet)
 
+## 2.1.5
+
+_Release Date: 2021-04-13_
+
+### Updated
+* the deprecated `fast-classpath-scanner` to its latest form `classgraph`.
+* the deprecated `FastClasspathScanner` to its latest form `ClassGraph`.
+
 ## 2.1.4
 
 _Release Date: 2020-06-01_
