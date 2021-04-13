@@ -47,10 +47,10 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 		Set<Class<?>> classes = new HashSet<>();
 
 		List<String> classnames = new ClassGraph()
-				.enableAnnotationInfo()
-				.enableClassInfo()
-				.acceptPackages(_package.orElse(""))
-				.scan().getAllStandardClasses().getNames();
+			.enableAnnotationInfo()
+			.enableClassInfo()
+			.acceptPackages(_package.orElse(""))
+			.scan().getAllStandardClasses().getNames();
 
 		HashMap<String, Throwable> failures = new HashMap<>();
 
