@@ -99,10 +99,10 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 		HashMap<String, Throwable> failures = new HashMap<>();
 
 		List<String> annotated_classnames = new ClassGraph()
-				.enableAnnotationInfo()
-				.enableClassInfo()
-				.acceptPackages(_package.orElse(""))
-				.scan().getClassesWithAnnotation( _annotation.getName() ).getNames();
+			.enableAnnotationInfo()
+			.enableClassInfo()
+			.acceptPackages(_package.orElse(""))
+			.scan().getClassesWithAnnotation( _annotation.getName() ).getNames();
 
 		for(String classname: annotated_classnames) {
 
