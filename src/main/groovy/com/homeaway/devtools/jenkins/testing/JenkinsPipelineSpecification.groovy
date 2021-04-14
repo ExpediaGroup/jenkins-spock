@@ -675,7 +675,23 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 							}
 						}
 						
-					} else 	if( _args != null && _args.length >= 1 && _args[_args.length-1] instanceof Closure ) {
+					} else if( _name == "retry" ) {
+						// special-case the retry() step to run up to count times
+						int left = _args[0]
+						Closure body = _args[1]
+						while (left > 0) {
+							try {
+								body()
+								break
+							} catch (Exception e) {
+								left--
+								if (left <= 0) {
+									throw e
+								}
+							}
+						}
+						
+					} else if( _args != null && _args.length >= 1 && _args[_args.length-1] instanceof Closure ) {
 						// there was at least one argument, and the last argument was a Closure
 						// this almost certainly means that the user's trying to pass the closure to the function as a "body"
 						// they probably want it to execute right now.
