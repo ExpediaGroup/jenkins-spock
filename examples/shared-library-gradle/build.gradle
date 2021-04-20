@@ -2,7 +2,7 @@ plugins {
     // Apply the groovy plugin to add support for Groovy
     id 'groovy'
     // Apply Gradle JPI plugin to simplify dependency management
-    id 'org.jenkins-ci.jpi' version '0.43.0-rc.5'
+    id 'org.jenkins-ci.jpi' version '0.43.0'
 }
 
 def testLogLevel = project.findProperty('testLogLevel') ?: 'ERROR'
@@ -12,7 +12,7 @@ version 'O.1-SNAPSHOT'
 
 jenkinsPlugin {
     // verions of Jenkins core jpi plugin depends on
-    jenkinsVersion = '2.281'
+    jenkinsVersion = '2.289'
     // optional list of package prefixes to mask
     maskClasses = 'jaxen'
 }
@@ -41,7 +41,6 @@ sourceSets {
 repositories {
     mavenCentral()
     mavenLocal()
-    jcenter()
     maven { url 'https://repo.jenkins-ci.org/releases/' }
 }
 
@@ -52,7 +51,7 @@ dependencies {
     testImplementation 'ch.qos.logback:logback-core:1.2.3'
     testImplementation 'ch.qos.logback:logback-classic:1.2.3'
     testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.281'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.289'
     // provides stage() step
     testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:2.5'
     // provides isUnix() step
