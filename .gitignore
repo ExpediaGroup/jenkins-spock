@@ -10,3 +10,4 @@ target
 *.pyc
 build.log
 **/*.versionsBackup
+.DS_Store

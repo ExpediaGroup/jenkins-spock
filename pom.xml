@@ -6,7 +6,7 @@
 	<groupId>com.homeaway.devtools.jenkins</groupId>
 	<artifactId>jenkins-spock</artifactId>
 	<packaging>jar</packaging>
-	<version>2.1.5-SNAPSHOT</version> <!-- http://semver.org -->
+	<version>2.1.6-SNAPSHOT</version> <!-- http://semver.org -->
 
 	<name>Jenkins pipeline support for Spock</name>
 	<description>Test Jenkins pipeline code with Spock</description>
@@ -36,7 +36,7 @@
 		<developerConnection>scm:git:git@github.com:homeaway/jenkins-spock.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 	<repositories>
 		<repository>
 			<id>jenkins-releases</id>
@@ -44,7 +44,7 @@
 			<url>http://repo.jenkins-ci.org/releases</url>
 		</repository>
 	</repositories>
-	
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -101,7 +101,7 @@
 		<!-- test settings -->
 		<slf4j.version>1.7.25</slf4j.version>
 		<junit.version>4.12</junit.version>
-		
+
 		<logback.configration>logback-test.xml</logback.configration>
 		<logdir>${project.build.directory}/log</logdir>
 		<test.loglevel>WARN</test.loglevel>
@@ -159,24 +159,24 @@
 										<cloneProjectsTo />
 										<streamLogs>true</streamLogs>
 									</configuration>
-								</execution>					
+								</execution>
 							</executions>
 						</plugin>
 					</plugins>
 				</pluginManagement>
-				
+
 				<plugins>
-					
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
 					</plugin>
-					
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-invoker-plugin</artifactId>
 					</plugin>
-				
+
 				</plugins>
 			</build>
 		</profile>
@@ -276,10 +276,11 @@
 			<artifactId>reflections</artifactId>
 			<version>0.9.12</version>
 		</dependency>
+
 		<dependency>
-			<groupId>io.github.lukehutch</groupId>
-			<artifactId>fast-classpath-scanner</artifactId>
-			<version>2.8.2</version>
+			<groupId>io.github.classgraph</groupId>
+			<artifactId>classgraph</artifactId>
+			<version>4.8.104</version>
 		</dependency>
 
 		<dependency>
@@ -415,9 +416,9 @@
 			<version>2.3</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- 'parallel' step comes from workflow-cps -->
-		
+
 		<!-- 
 			for mocking the Jenkins singleton outside Spock
 			Only done to verify that IF that is done properly, THEN
@@ -550,7 +551,7 @@
 						<skip>true</skip>
 					</configuration>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
@@ -775,7 +776,7 @@
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -790,12 +791,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -805,7 +806,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
@@ -815,7 +816,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>

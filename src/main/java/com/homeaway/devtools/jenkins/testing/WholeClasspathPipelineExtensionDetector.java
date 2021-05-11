@@ -28,7 +28,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
+import io.github.classgraph.ClassGraph;
 
 /**
  * Search through classes in the entire classpath for Jenkins Pipeline extensions.
@@ -46,7 +46,11 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 
 		Set<Class<?>> classes = new HashSet<>();
 
-		List<String> classnames = new FastClasspathScanner(_package.orElse("") ).scan().getNamesOfAllStandardClasses();
+		List<String> classnames = new ClassGraph()
+			.enableAnnotationInfo()
+			.enableClassInfo()
+			.acceptPackages(_package.orElse(""))
+			.scan().getAllStandardClasses().getNames();
 
 		HashMap<String, Throwable> failures = new HashMap<>();
 
@@ -94,7 +98,11 @@ public class WholeClasspathPipelineExtensionDetector extends APipelineExtensionD
 
 		HashMap<String, Throwable> failures = new HashMap<>();
 
-		List<String> annotated_classnames = new FastClasspathScanner(_package.orElse("") ).scan().getNamesOfClassesWithAnnotation( _annotation );
+		List<String> annotated_classnames = new ClassGraph()
+			.enableAnnotationInfo()
+			.enableClassInfo()
+			.acceptPackages(_package.orElse(""))
+			.scan().getClassesWithAnnotation( _annotation.getName() ).getNames();
 
 		for(String classname: annotated_classnames) {
 
