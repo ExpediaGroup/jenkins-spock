@@ -1104,35 +1104,38 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 			}
 		}
 		
-		APipelineExtensionDetector classpath_scanner = new WholeClasspathPipelineExtensionDetector()
-		
-		PIPELINE_STEPS = classpath_scanner.getPipelineSteps(Optional.<String>empty())
-		
-		Set<String> symbols = classpath_scanner.getSymbols(Optional.<String>empty())
-		Set<String> global_variables = classpath_scanner.getGlobalVariables(Optional.<String>empty())
-		Set<String> shared_library_variables = getSharedLibraryVariables()
-		
-		PIPELINE_SYMBOLS.addAll( symbols )
-		PIPELINE_SYMBOLS.addAll( global_variables )
-		PIPELINE_SYMBOLS.addAll( shared_library_variables )
-		
-		Set<Class<?>> classes = new LocalProjectPipelineExtensionDetector()
-		.getClassesOfTypeInPackage(
-			Object.class,
-			Optional.<String>empty())
-		
-		// This class will behave differently and _not_ forward pipeline step invocations directly to the appropriately-named mock. 
-		classes.remove(PipelineVariableImpersonator.class)
-		
-		// instrument CpsScript, which we know we'll be using.
-		classes.add( CpsScript.class )
-		
-		// exclude all interfaces - nobody will be able to call them, so they don't need to be instrumented.
-		// any implementation will be a real, detected class.
-		classes = classes.findAll { ! it.isInterface() }
-		
-		// and publish that list of classes
-		DEFAULT_TEST_CLASSES.addAll( classes )
+		// Scan classpaths for extensions only once
+		if(PIPELINE_STEPS.isEmpty()) {
+			APipelineExtensionDetector classpath_scanner = new WholeClasspathPipelineExtensionDetector()
+
+			PIPELINE_STEPS = classpath_scanner.getPipelineSteps(Optional.<String> empty())
+
+			Set<String> symbols = classpath_scanner.getSymbols(Optional.<String> empty())
+			Set<String> global_variables = classpath_scanner.getGlobalVariables(Optional.<String> empty())
+			Set<String> shared_library_variables = getSharedLibraryVariables()
+
+			PIPELINE_SYMBOLS.addAll(symbols)
+			PIPELINE_SYMBOLS.addAll(global_variables)
+			PIPELINE_SYMBOLS.addAll(shared_library_variables)
+
+			Set<Class<?>> classes = new LocalProjectPipelineExtensionDetector()
+					.getClassesOfTypeInPackage(
+							Object.class,
+							Optional.<String> empty())
+
+			// This class will behave differently and _not_ forward pipeline step invocations directly to the appropriately-named mock.
+			classes.remove(PipelineVariableImpersonator.class)
+
+			// instrument CpsScript, which we know we'll be using.
+			classes.add(CpsScript.class)
+
+			// exclude all interfaces - nobody will be able to call them, so they don't need to be instrumented.
+			// any implementation will be a real, detected class.
+			classes = classes.findAll { !it.isInterface() }
+
+			// and publish that list of classes
+			DEFAULT_TEST_CLASSES.addAll(classes)
+		}
 	}
 	
 	/**
