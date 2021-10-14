@@ -12,7 +12,7 @@ version 'O.1-SNAPSHOT'
 
 jenkinsPlugin {
     // verions of Jenkins core jpi plugin depends on
-    jenkinsVersion = '2.307'
+    jenkinsVersion = '2.316'
     // optional list of package prefixes to mask
     maskClasses = 'jaxen'
 }
@@ -45,19 +45,19 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.5.14'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.15'
 
     testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.5'
-    testImplementation 'ch.qos.logback:logback-core:1.2.3'
-    testImplementation 'ch.qos.logback:logback-classic:1.2.3'
+    testImplementation 'ch.qos.logback:logback-core:1.2.6'
+    testImplementation 'ch.qos.logback:logback-classic:1.2.6'
     testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.307'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.316'
     // provides stage() step
     testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:2.5'
     // provides isUnix() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.24'
     // provides sh() step
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.39'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.40'
     // provides libraryResource() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.21'
     // provides slackSend() step
