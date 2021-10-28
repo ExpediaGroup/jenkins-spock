@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## Unreleased
 
 * Fixed a bug for Java 11 compatibility
+* Changed Jenkins Maven repo URL from http:// to https://
 
 ## 2.1.5
 
