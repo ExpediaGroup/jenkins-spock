@@ -12,7 +12,7 @@ version 'O.1-SNAPSHOT'
 
 jenkinsPlugin {
     // verions of Jenkins core jpi plugin depends on
-    jenkinsVersion = '2.316'
+    jenkinsVersion = '2.320'
     // optional list of package prefixes to mask
     maskClasses = 'jaxen'
 }
@@ -51,7 +51,7 @@ dependencies {
     testImplementation 'ch.qos.logback:logback-core:1.2.6'
     testImplementation 'ch.qos.logback:logback-classic:1.2.6'
     testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.316'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.320'
     // provides stage() step
     testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:2.5'
     // provides isUnix() step
