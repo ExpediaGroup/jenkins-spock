@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 * Scan classpaths for extensions only once
 * Fixed a bug for Java 11 compatibility
+* Changed Jenkins Maven repo URL from http:// to https://
+* The LocalProjectPipelineExtensionDetectorSpec#getClassesOfTypeInPackage method now finds classes that are 
+  descendants of `java.lang.Object` but aren't direct subtypes. 
 
 ## 2.1.5
 

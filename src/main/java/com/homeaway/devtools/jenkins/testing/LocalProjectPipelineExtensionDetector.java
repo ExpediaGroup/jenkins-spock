@@ -18,18 +18,17 @@ limitations under the License.
 package com.homeaway.devtools.jenkins.testing;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 
-import org.reflections.Reflections;
-import org.reflections.ReflectionsException;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+import groovy.lang.Closure;
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,38 +50,26 @@ public class LocalProjectPipelineExtensionDetector extends APipelineExtensionDet
 	@Override
 	public Set<Class<?>> getClassesOfTypeInPackage(Class<?> _supertype, Optional<String> _package) {
 
-		Set<Class<?>> classes = new HashSet<>();
-
-		Map<String, Throwable> failures = new HashMap<>();
-
-		Reflections reflector = new Reflections(
-			new ConfigurationBuilder()
-			.setScanners(new SubTypesScanner(false))
-			.setUrls(ClasspathHelper.forPackage(_package.orElse(""))));
-
-		Set<String> all_types = new HashSet<>();
-
-		try {
-			all_types = reflector.getAllTypes();
-		} catch( ReflectionsException re ) {
-			if( re.getMessage().contains( "Couldn't find subtypes of Object." ) ) {
-				// this can happen if there are no classes local to the project.
-				// the full error message is
-				//     Couldn't find subtypes of Object.
-				//     Make sure SubTypesScanner initialized to include Object class - new SubTypesScanner(false)
-				// which we have done above, so that is NOT the actual cause.
-				// If there are no classes local to the project, that's OK!
-				// Just use an empty set instead of throwing an exception.
-				LOG.info( "Looks like there aren't any classes compiled by this project." );
-			} else {
-				// We still do want to error with "real" exceptions, though.
-				throw re;
-			}
+		List<String> classnames;
+		try (
+			ScanResult scanResult = new ClassGraph()
+				.acceptPackages(_package.orElse(""))
+				.disableJarScanning()
+				.scan()
+		) {
+			classnames = scanResult
+				.getAllClasses()
+				.filter(ci -> !ci.extendsSuperclass(Closure.class.getName()))
+				.filter(ci -> !ci.extendsSuperclass("spock.lang.Specification"))
+			 	.filter(ci -> !(ci.extendsSuperclass(InvalidlyNamedScriptWrapper.class.getName()) || ci.getName().equals(InvalidlyNamedScriptWrapper.class.getName())))
+				.filter(ci -> ci.extendsSuperclass(_supertype.getName()))
+				.getNames();
 		}
 
-		for(String classname : all_types ) {
-
-			Class<?> clazz = null;
+		Set<Class<?>> classes = new HashSet<>();
+		Map<String, Throwable> failures = new HashMap<>();
+		for(String classname : classnames ) {
+			Class<?> clazz;
 
 			try {
 				clazz = Class.forName( classname );
@@ -90,7 +77,6 @@ public class LocalProjectPipelineExtensionDetector extends APipelineExtensionDet
 				failures.put( classname, e );
 				continue;
 			}
-
 			classes.add( clazz );
 		}
 
@@ -114,12 +100,17 @@ public class LocalProjectPipelineExtensionDetector extends APipelineExtensionDet
 	@Override
 	public Set<Class<?>> getClassesWithAnnotationOfTypeInPackage( Class<? extends Annotation> _annotation, Class<?> _supertype, Optional<String> _package) {
 
-		Set<Class<?>> annotated_classes = new HashSet<>();
-
-		for( Class<?> annotated_class : new Reflections( _package.orElse("") ).getTypesAnnotatedWith( _annotation ) ) {
-			if( _supertype.isAssignableFrom( annotated_class ) ) {
-				annotated_classes.add( annotated_class );
-			}
+		Set<Class<?>> annotated_classes;
+		try (
+			ScanResult scanResult = new ClassGraph()
+				.acceptPackages(_package.orElse(""))
+				.enableAnnotationInfo()
+				.scan()
+		) {
+			annotated_classes = new HashSet<>(scanResult
+				.getClassesWithAnnotation(_annotation.getName())
+				.filter(ci -> ci.extendsSuperclass(_supertype.getName()))
+				.loadClasses(true));
 		}
 
 		return annotated_classes;
