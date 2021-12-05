@@ -38,7 +38,7 @@
 		
 		<jenkins-spock.version>2.1.5</jenkins-spock.version>
 		
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 		
 		<logback.configration>logback-test.xml</logback.configration>
 		<logdir>${project.build.directory}/log</logdir>
