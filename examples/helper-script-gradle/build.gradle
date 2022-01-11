@@ -10,7 +10,7 @@ version 'O.1-SNAPSHOT'
 
 jenkinsPlugin {
     // verions of Jenkins core jpi plugin depends on
-    jenkinsVersion = '2.320'
+    jenkinsVersion = '2.329'
     // optional list of package prefixes to mask
     maskClasses = 'jaxen'
 }
@@ -43,10 +43,10 @@ dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.5.15'
 
     testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.5'
-    testImplementation 'ch.qos.logback:logback-core:1.2.6'
-    testImplementation 'ch.qos.logback:logback-classic:1.2.6'
+    testImplementation 'ch.qos.logback:logback-core:1.2.10'
+    testImplementation 'ch.qos.logback:logback-classic:1.2.10'
     testImplementation 'javax.servlet:javax.servlet-api:4.0.1'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.320'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.329'
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2.94'
     // provides isUnix() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.24'
