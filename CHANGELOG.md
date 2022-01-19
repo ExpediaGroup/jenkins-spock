@@ -7,7 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## Unreleased
 
-* (nothing yet)
+* Scan classpaths for extensions only once
+* Fixed a bug for Java 11 compatibility
 
 ## 2.1.5
 
