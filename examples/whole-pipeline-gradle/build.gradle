@@ -12,7 +12,7 @@ version 'O.1-SNAPSHOT'
 
 jenkinsPlugin {
     // verions of Jenkins core jpi plugin depends on
-    jenkinsVersion = '2.329'
+    jenkinsVersion = '2.335'
     // optional list of package prefixes to mask
     maskClasses = 'jaxen'
 }
@@ -35,17 +35,17 @@ dependencies {
     testImplementation 'ch.qos.logback:logback-core:1.2.10'
     testImplementation 'ch.qos.logback:logback-classic:1.2.10'
     testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.329'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.335'
     // provides stage() step
     testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:2.5'
     // provides sh() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.40'
     // provides GlobalVariable
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.21'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.21.1'
     // provides slackSend() step
     testImplementation 'org.jenkins-ci.plugins:slack:2.49'
     // provides sshagent() step
-    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.23'
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.24.1'
 
     // plugin dependencies
     testImplementation 'com.cloudbees:groovy-cps:1.31'  // required by workflow-cps plugin

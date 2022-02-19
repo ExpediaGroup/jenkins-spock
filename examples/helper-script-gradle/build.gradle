@@ -10,7 +10,7 @@ version 'O.1-SNAPSHOT'
 
 jenkinsPlugin {
     // verions of Jenkins core jpi plugin depends on
-    jenkinsVersion = '2.329'
+    jenkinsVersion = '2.335'
     // optional list of package prefixes to mask
     maskClasses = 'jaxen'
 }
@@ -46,13 +46,13 @@ dependencies {
     testImplementation 'ch.qos.logback:logback-core:1.2.10'
     testImplementation 'ch.qos.logback:logback-classic:1.2.10'
     testImplementation 'javax.servlet:javax.servlet-api:4.0.1'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.329'
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2.94'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.335'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2.94.1'
     // provides isUnix() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.24'
     // provides sh() step
     testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.40'
     // provides sshagent() step
-    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.23'
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.24.1'
 }
 
