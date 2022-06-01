@@ -33,7 +33,7 @@
 		<jenkins.version>2.102</jenkins.version>
 		<jenkins.servlet.version>3.1.0</jenkins.servlet.version>
 		<jenkins.symbol.version>1.10</jenkins.symbol.version>
-		<jenkins.workflow.cps.version>2.36</jenkins.workflow.cps.version>
+		<jenkins.workflow.cps.version>2.65</jenkins.workflow.cps.version>
 		<jenkins.workflow.step.version>2.10</jenkins.workflow.step.version>
 		
 		<jenkins-spock.version>2.1.5</jenkins-spock.version>
