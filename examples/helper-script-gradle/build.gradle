@@ -10,7 +10,7 @@ version 'O.1-SNAPSHOT'
 
 jenkinsPlugin {
     // verions of Jenkins core jpi plugin depends on
-    jenkinsVersion = '2.340'
+    jenkinsVersion = '2.355'
     // optional list of package prefixes to mask
     maskClasses = 'jaxen'
 }
@@ -40,19 +40,19 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.5.16'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.17'
 
     testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.5'
     testImplementation 'ch.qos.logback:logback-core:1.2.11'
     testImplementation 'ch.qos.logback:logback-classic:1.2.11'
     testImplementation 'javax.servlet:javax.servlet-api:4.0.1'
-    testImplementation 'org.jenkins-ci.main:jenkins-core:2.340'
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2.94.1'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.355'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps:2725.v7b_c717eb_12ce'
     // provides isUnix() step
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.24'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:948.v2c72a_091b_b_68'
     // provides sh() step
-    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.40'
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:1146.v1a_d2e603f929'
     // provides sshagent() step
-    testImplementation 'org.jenkins-ci.plugins:ssh-agent:1.24.1'
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:295.v9ca_a_1c7cc3a_a_'
 }
 
