@@ -92,7 +92,7 @@
 		<objenesis.version>2.6</objenesis.version>
 
 		<!-- jenkins software versions -->
-		<jenkins.version>2.102</jenkins.version>
+		<jenkins.version>2.319.3</jenkins.version>
 		<jenkins.workflow.step.version>2.10</jenkins.workflow.step.version>
 		<jenkins.workflow.cps.version>2.36</jenkins.workflow.cps.version>
 		<jenkins.symbol.version>1.10</jenkins.symbol.version>
