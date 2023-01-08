@@ -1,0 +1,72 @@
+plugins {
+    // Apply the groovy plugin to add support for Groovy
+    id 'groovy'
+    // Apply Gradle JPI plugin to simplify dependency management
+    id 'org.jenkins-ci.jpi' version '0.43.0'
+}
+
+def testLogLevel = project.findProperty('testLogLevel') ?: 'ERROR'
+
+group 'com.example'
+version 'O.1-SNAPSHOT'
+
+jenkinsPlugin {
+    // verions of Jenkins core jpi plugin depends on
+    jenkinsVersion = '2.355'
+    // optional list of package prefixes to mask
+    maskClasses = 'jaxen'
+}
+
+allprojects {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url 'https://repo.jenkins-ci.org/releases/' }
+}
+
+dependencies {
+    implementation 'org.codehaus.groovy:groovy-all:2.5.17'
+
+    testImplementation 'com.homeaway.devtools.jenkins:jenkins-spock:2.1.5'
+    testImplementation 'ch.qos.logback:logback-core:1.2.11'
+    testImplementation 'ch.qos.logback:logback-classic:1.2.11'
+    testImplementation 'javax.servlet:javax.servlet-api:3.1.0'
+    testImplementation 'org.jenkins-ci.main:jenkins-core:2.355'
+    // provides stage() step
+    testImplementation 'org.jenkins-ci.plugins:pipeline-stage-step:293.v200037eefcd5'
+    // provides sh() step
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:1146.v1a_d2e603f929'
+    // provides GlobalVariable
+    testImplementation 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:588.v576c103a_ff86'
+    // provides slackSend() step
+    testImplementation 'org.jenkins-ci.plugins:slack:608.v19e3b_44b_b_9ff'
+    // provides sshagent() step
+    testImplementation 'org.jenkins-ci.plugins:ssh-agent:295.v9ca_a_1c7cc3a_a_'
+
+    // plugin dependencies
+    testImplementation 'com.cloudbees:groovy-cps:1.32'  // required by workflow-cps plugin
+}
+
+task cleanSharedLibraries(type: Delete) {
+    delete "$buildDir/classes/groovy/test/vars"
+}
+
+task prepareSharedLibraries(type: Copy) {
+    dependsOn tasks.cleanSharedLibraries
+    from '.'
+    include 'Jenkinsfile'
+    into "$buildDir/classes/groovy/test/vars"
+}
+
+test {
+    dependsOn tasks.prepareSharedLibraries
+    systemProperties = [
+            'root.loglevel': testLogLevel,
+            'root.appender': 'Stdout',
+            'logdir': project.buildDir
+    ]
+}

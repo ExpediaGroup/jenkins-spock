@@ -383,13 +383,13 @@ then:
  * Therefore, the descriptor must classloaded and then instantiated in order to get the right name.
  * </p>
  * <p>
- * Some Jenkins extensions try to access the {@link Jenkins} singelton in <code>static { ... }</code> setup,
+ * Some Jenkins extensions try to access the {@link Jenkins} singleton in <code>static { ... }</code> setup,
  * or in their Descriptor's constructor.
  * The mock Jenkins that is automatically created for every test case won't help here because no test cases are running yet:
  * jenkins-spock is still setting up.
  * </p>
  * <p>
- * In case a test suite involves classes that behave this way, jenkins-spock automatically creates a separate, static Spock mock of the {@link Jenkins} singelton
+ * In case a test suite involves classes that behave this way, jenkins-spock automatically creates a separate, static Spock mock of the {@link Jenkins} singleton
  * and injects it into the {@link Jenkins} class before any Extensions are classloaded and before any Descriptors are instantiated.
  * This mock cannot be stubbed and its interactions cannot be verified because
  * <a target="_blank" href="http://spockframework.org/spock/docs/1.1-SNAPSHOT/all_in_one.html#_mocks">Spock mocks do not fully work outside a specification.</a>
@@ -704,7 +704,7 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 				// undefined, and un-mocked pipeline step.
 				// print a helpful error message.
 				MissingMethodException mme = new MissingMethodException( "(intercepted on instance [${object}] during test [${this}]) ${_name}", delegate.getClass(), _args )
-				throw new IllegalStateException( "During a test, the pipeline step [${_name}] was called but there was no mock for it.\n\t1. Is the name correct?\n\t2. Does the pipeline step have a descriptor with that name?\n\t3. Does that step come from a plugin? If so, is that plugin listed as a dependency in your pom.xml?\n\t4. If not, you may need to call explicitlyMockPipelineStep('${_name}') in your test's setup: block.", mme )
+				throw new IllegalStateException( "During a test, the pipeline step [${_name}] was called but there was no mock for it.\n\t1. Is the name correct?\n\t2. Does the pipeline step have a descriptor with that name?\n\t3. Does that step come from a plugin? If so, is that plugin listed as a dependency in your pom.xml (or build.gradle)?\n\t4. If not, you may need to call explicitlyMockPipelineStep('${_name}') in your test's setup: block.", mme )
 			}
 			
 			def originalPropertyMissing = object.metaClass.getMetaMethod("propertyMissing", "string" )
@@ -750,7 +750,7 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 				}
 				
 				MissingPropertyException mpe = new MissingPropertyException( "(intercepted on instance [${object}] during test [${this}]) ${_name}", object.getClass() )
-				throw new IllegalStateException( "There is no pipeline variable mock for [${_name}].\n\t1. Is the name correct?\n\t2. Is it a GlobalVariable extension point? If so, does the getName() method return [${_name}]?\n\t3. Is that variable normally defined by Jenkins? If so, you may need to define it by hand in your Spec.\n\t4. Does that variable come from a plugin? If so, is that plugin listed as a dependency in your pom.xml?\n\t5. If not, you may need to call explicitlyMockPipelineVariable(\"${_name}\") during your test setup.", mpe )
+				throw new IllegalStateException( "There is no pipeline variable mock for [${_name}].\n\t1. Is the name correct?\n\t2. Is it a GlobalVariable extension point? If so, does the getName() method return [${_name}]?\n\t3. Is that variable normally defined by Jenkins? If so, you may need to define it by hand in your Spec.\n\t4. Does that variable come from a plugin? If so, is that plugin listed as a dependency in your pom.xml (or build.gradle)?\n\t5. If not, you may need to call explicitlyMockPipelineVariable(\"${_name}\") during your test setup.", mpe )
 			}
 			
 			instrumented_objects.add( object )
@@ -800,7 +800,7 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 				}
 			}
 			
-			throw new IllegalStateException( "There is no pipeline step mock for [${_pipeline_extension}].\n\t1. Is the name correct?\n\t2. Does the pipeline step have a descriptor with that name?\n\t3. Does that step come from a plugin? If so, is that plugin listed as a dependency in your pom.xml?\n\t4. If not, you may need to call explicitlyMockPipelineStep('${_pipeline_extension}') in your test's setup: block." )
+			throw new IllegalStateException( "There is no pipeline step mock for [${_pipeline_extension}].\n\t1. Is the name correct?\n\t2. Does the pipeline step have a descriptor with that name?\n\t3. Does that step come from a plugin? If so, is that plugin listed as a dependency in your pom.xml (or build.gradle)?\n\t4. If not, you may need to call explicitlyMockPipelineStep('${_pipeline_extension}') in your test's setup: block." )
 		}
 		
 		return mocks.get( _pipeline_extension )
@@ -824,7 +824,7 @@ public abstract class JenkinsPipelineSpecification extends Specification {
 	 * You should either
 	 * </p>
 	 * <ol>
-	 * <li>Add a dependency to your pom.xml that brings in the plugin that provides the necessary pipeline step</li>
+	 * <li>Add a dependency to your pom.xml (or build.gradle) that brings in the plugin that provides the necessary pipeline step</li>
 	 * <li>Refactor your code to not depend on the pipeline step "magically" existing.
 	 * </ol>
 	 * 
